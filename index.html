@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>40 Deneme Tam Analiz</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f4f8; padding: 20px; }
+        .container { 
+            width: 95%; 
+            max-width: 1200px; 
+            margin: auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 15px; 
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1); 
+        }
+        h2 { text-align: center; color: #2c3e50; }
+        .footer-note { text-align: center; color: #95a5a6; font-size: 0.85em; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📊 40 Deneme Performans Takibi</h2>
+    <div style="height: 500px;"> <canvas id="mainChart"></canvas>
+    </div>
+    <div class="footer-note">Her rakam tam üzerindeki veri noktasına hizalanmıştır.</div>
+</div>
+
+<script>
+    const ctx = document.getElementById('mainChart').getContext('2d');
+    
+    const dogrular = [
+        6, 6, 6, 5, 5, 6, 6, 5, 6, 4, 
+        5, 6, 5, 5, 5, 4, 4, 5, 5, 5, 
+        5, 6, 5, 6, 5, 4, 3, 4, 4, 4, 
+        3, 4, 5, 5, 5, 6, 4, 6, 5, 3,
+        4, 4
+    ].slice(0, 40);
+
+    const yanlislar = dogrular.map(d => 6 - d);
+    const labels = Array.from({length: 40}, (_, i) => i + 1);
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Doğru',
+                    data: dogrular,
+                    borderColor: '#2ecc71',
+                    backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                    borderWidth: 2.5,
+                    pointRadius: 4,
+                    clip: false,
+                    tension: 0.3,
+                    fill: true
+                },
+                {
+                    label: 'Yanlış',
+                    data: yanlislar,
+                    borderColor: '#e74c3c',
+                    backgroundColor: 'rgba(231, 76, 60, 0.05)',
+                    borderWidth: 2,
+                    borderDash: [3, 3],
+                    pointRadius: 4,
+                    clip: false,
+                    tension: 0.3,
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                x: {
+                    display: true,
+                    title: { display: true, text: 'Deneme No' },
+                    ticks: {
+                        autoSkip: false, // Rakamların atlanmasını engeller
+                        maxRotation: 0,  // Rakamların dikleşmesini engeller
+                        minRotation: 0,
+                        font: { size: 10 } // Sığması için fontu hafif küçülttük
+                    },
+                    grid: { display: false } // Daha temiz görünüm için dikey çizgileri kaldırdık
+                },
+                y: {
+                    beginAtZero: true,
+                    max: 7,
+                    ticks: {
+                        stepSize: 1,
+                        callback: function(value) { if (value <= 6) return value; }
+                    },
+                    title: { display: true, text: 'Soru Sayısı' }
+                }
+            },
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: { intersect: false, mode: 'index' }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
