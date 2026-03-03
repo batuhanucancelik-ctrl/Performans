@@ -3,21 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>40 Deneme Tam Analiz</title>
+    <title>Batuhan Uçançelik - Performans Analizi</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f4f8; padding: 20px; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background-color: #f0f4f8; 
+            margin: 0; 
+            padding: 10px; 
+            display: flex; 
+            justify-content: center;
+        }
         .container { 
-            width: 95%; 
+            width: 100%; 
             max-width: 1200px; 
-            margin: auto; 
             background: white; 
-            padding: 20px; 
+            padding: 15px; 
             border-radius: 15px; 
             box-shadow: 0 5px 25px rgba(0,0,0,0.1); 
+            box-sizing: border-box;
         }
-        h2 { text-align: center; color: #2c3e50; }
-        .footer-note { text-align: center; color: #95a5a6; font-size: 0.85em; margin-top: 15px; }
+        h2, h3 { text-align: center; color: #2c3e50; margin: 5px 0; }
+        h3 { color: #3498db; font-weight: normal; font-size: 1.1em; }
+        
+        /* Mobil için yatay kaydırma alanı */
+        .chart-wrapper {
+            width: 100%;
+            overflow-x: auto; /* Mobilde sağa kaydırma sağlar */
+            -webkit-overflow-scrolling: touch;
+            margin-top: 20px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            min-width: 800px; /* Mobilde sıkışmaması için minimum genişlik */
+        }
+
+        .footer-note { 
+            text-align: center; 
+            color: #95a5a6; 
+            font-size: 0.75em; 
+            margin-top: 15px; 
+            padding-bottom: 10px;
+        }
+
+        /* Mobil cihazlarda başlıkları küçült */
+        @media (max-width: 600px) {
+            h2 { font-size: 1.2em; }
+            h3 { font-size: 0.9em; }
+        }
     </style>
 </head>
 <body>
@@ -25,9 +60,14 @@
 <div class="container">
     <h2>📊 40 Deneme Performans Takibi</h2>
     <h3>Batuhan Uçançelik</h3>
-    <div style="height: 500px;"> <canvas id="mainChart"></canvas>
+    
+    <div class="chart-wrapper">
+        <div class="chart-container">
+            <canvas id="mainChart"></canvas>
+        </div>
     </div>
-    <div class="footer-note">Her rakam tam üzerindeki veri noktasına hizalanmıştır.</div>
+    
+    <div class="footer-note">📲 Mobilde grafiği sağa kaydırarak tüm denemeleri görebilirsiniz.</div>
 </div>
 
 <script>
@@ -56,7 +96,6 @@
                     backgroundColor: 'rgba(46, 204, 113, 0.1)',
                     borderWidth: 2.5,
                     pointRadius: 4,
-                    clip: false,
                     tension: 0.3,
                     fill: true
                 },
@@ -68,7 +107,6 @@
                     borderWidth: 2,
                     borderDash: [3, 3],
                     pointRadius: 4,
-                    clip: false,
                     tension: 0.3,
                     fill: true
                 }
@@ -79,15 +117,11 @@
             responsive: true,
             scales: {
                 x: {
-                    display: true,
-                    title: { display: true, text: 'Deneme No' },
                     ticks: {
-                        autoSkip: false, // Rakamların atlanmasını engeller
-                        maxRotation: 0,  // Rakamların dikleşmesini engeller
-                        minRotation: 0,
-                        font: { size: 10 } // Sığması için fontu hafif küçülttük
+                        autoSkip: false,
+                        font: { size: 11, weight: 'bold' }
                     },
-                    grid: { display: false } // Daha temiz görünüm için dikey çizgileri kaldırdık
+                    grid: { display: false }
                 },
                 y: {
                     beginAtZero: true,
@@ -95,13 +129,17 @@
                     ticks: {
                         stepSize: 1,
                         callback: function(value) { if (value <= 6) return value; }
-                    },
-                    title: { display: true, text: 'Soru Sayısı' }
+                    }
                 }
             },
             plugins: {
-                legend: { position: 'top' },
-                tooltip: { intersect: false, mode: 'index' }
+                legend: { position: 'top', labels: { boxWidth: 12, padding: 15 } },
+                tooltip: { 
+                    intersect: false, 
+                    mode: 'index',
+                    padding: 10,
+                    bodySpacing: 5
+                }
             }
         }
     });
