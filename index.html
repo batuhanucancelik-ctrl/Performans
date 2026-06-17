@@ -1,188 +1,552 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Batuhan Uçançelik - Performans Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f4f8; margin: 0; padding: 20px; }
-        .main-container { 
-            display: flex; 
-            flex-direction: row; 
-            gap: 20px; 
-            max-width: 1300px; 
-            margin: auto; 
-            background: white; 
-            padding: 20px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        /* Sol Kontrol Paneli */
-        .side-panel {
-            flex: 0 0 250px;
-            background: #2c3e50;
-            color: white;
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>HIZ/OKU — Hızlı Okuma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0c;
+    --bg-soft:#141415;
+    --bg-soft-2:#1c1c1e;
+    --line:#272729;
+    --text:#f3f3f1;
+    --text-dim:#8d8d92;
+    --text-faint:#52525a;
+    --red:#ff3b30;
+    --red-soft:rgba(255,59,48,.14);
+    --radius:12px;
+    --radius-sm:8px;
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font);
+    min-height:100vh;
+    overflow-y:auto;
+    -webkit-font-smoothing:antialiased;
+  }
+  button{font-family:var(--font);}
+  :focus-visible{outline:2px solid var(--red);outline-offset:3px;}
 
-        .nav-btn {
-            background: #3498db;
-            border: none;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            font-size: 24px;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        .nav-btn:hover { background: #2980b9; transform: scale(1.1); }
-        
-        .display-box { text-align: center; margin: 10px 0; }
-        .num-large { font-size: 60px; font-weight: bold; line-height: 1; display: block; }
-        .label-small { font-size: 14px; color: #bdc3c7; text-transform: uppercase; letter-spacing: 2px; }
+  .app{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 clamp(16px,4vw,40px);
+  }
 
-        .stats-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 15px; 
-            width: 100%; 
-            margin-top: 20px;
-            border-top: 1px solid #455a64;
-            padding-top: 20px;
-        }
-        .stat-card { text-align: center; }
-        .stat-val { font-size: 32px; font-weight: bold; display: block; }
-        .val-dogru { color: #2ecc71; }
-        .val-yanlis { color: #e74c3c; }
+  /* ---------- TOP BAR ---------- */
+  .topbar{
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px 0 16px;
+  }
+  .brand{display:flex;align-items:baseline;font-weight:800;font-size:18px;letter-spacing:.01em;}
+  .brand .slash{color:var(--red);margin:0 1px;}
+  .status{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);}
+  .status .dot{width:6px;height:6px;border-radius:50%;background:var(--text-faint);transition:box-shadow .2s,background .2s;}
+  .status.is-ready .dot{background:var(--red);box-shadow:0 0 8px var(--red);}
 
-        /* Grafik Alanı */
-        .chart-area { flex: 1; min-width: 0; }
-        .chart-wrapper { width: 100%; overflow-x: auto; }
-        .chart-container { position: relative; height: 450px; min-width: 900px; }
+  /* ---------- UPLOADER ---------- */
+  .uploader{flex-shrink:0;margin-bottom:18px;}
+  .dropzone{
+    border:1.5px dashed var(--line);
+    border-radius:var(--radius);
+    background:var(--bg-soft);
+    padding:20px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    cursor:pointer;
+    transition:border-color .15s,background .15s;
+  }
+  .dropzone:hover,.dropzone.is-dragover{border-color:var(--red);background:var(--red-soft);}
+  .dropzone svg{flex-shrink:0;color:var(--text-dim);transition:color .15s;}
+  .dropzone:hover svg,.dropzone.is-dragover svg{color:var(--red);}
+  .dz-text strong{display:block;font-size:14.5px;font-weight:600;}
+  .dz-text span{display:block;font-size:12.5px;color:var(--text-dim);margin-top:2px;}
 
-        @media (max-width: 900px) {
-            .main-container { flex-direction: column; }
-            .side-panel { flex: none; width: 100%; box-sizing: border-box; }
-            .chart-container { height: 350px; }
-        }
-    </style>
+  .dz-secondary{margin-top:10px;text-align:center;}
+  .dz-paste-toggle{
+    background:none;border:none;color:var(--text-dim);font-size:12.5px;
+    cursor:pointer;padding:4px 8px;text-decoration:underline;text-decoration-color:transparent;
+    transition:color .15s,text-decoration-color .15s;
+  }
+  .dz-paste-toggle:hover{color:var(--red);text-decoration-color:var(--red);}
+
+  .paste-panel{display:none;margin-top:10px;}
+  .paste-panel.is-open{display:block;}
+  #pasteArea{
+    width:100%;min-height:84px;resize:vertical;
+    background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius-sm);
+    color:var(--text);padding:12px;font-family:var(--font);font-size:13.5px;line-height:1.5;
+  }
+  #pasteArea::placeholder{color:var(--text-faint);}
+  .use-text-btn{
+    margin-top:8px;background:var(--red);color:#0b0b0c;border:none;font-weight:600;
+    font-size:13px;padding:9px 16px;border-radius:var(--radius-sm);cursor:pointer;transition:opacity .15s;
+  }
+  .use-text-btn:hover{opacity:.88;}
+
+  .progress-line{display:none;height:2px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:10px;}
+  .uploader.is-loading .progress-line{display:block;}
+  .uploader.is-loading .dropzone{opacity:.45;pointer-events:none;}
+  .progress-line .fill{height:100%;width:0%;background:var(--red);transition:width .12s linear;}
+
+  .uploader.is-loaded .dropzone,
+  .uploader.is-loaded .dz-secondary,
+  .uploader.is-loaded .paste-panel{display:none;}
+  .uploader.is-error .dropzone{border-color:var(--red);}
+
+  .file-chip{display:none;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-soft);}
+  .uploader.is-loaded .file-chip{display:flex;}
+  .file-chip svg{flex-shrink:0;color:var(--red);}
+  .file-chip .meta{min-width:0;flex:1;}
+  .file-chip .meta strong{display:block;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .file-chip .meta span{display:block;font-size:12px;color:var(--text-dim);margin-top:2px;}
+  .change-btn{flex-shrink:0;width:34px;height:34px;}
+
+  /* ---------- READING STAGE ---------- */
+  .stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;position:relative;}
+  .reticle{position:relative;width:100%;max-width:760px;height:clamp(150px,28vh,230px);display:flex;align-items:center;justify-content:center;}
+  .reticle::before{
+    content:'';position:absolute;left:50%;top:6%;bottom:6%;width:2px;
+    background:linear-gradient(to bottom,transparent,var(--red) 22%,var(--red) 78%,transparent);
+    opacity:.22;transform:translateX(-50%);
+  }
+  .reticle-tick{position:absolute;left:50%;width:20px;height:2px;background:var(--red);opacity:.55;border-radius:1px;transform:translateX(-50%);}
+  .reticle-tick.top{top:3%;}
+  .reticle-tick.bottom{bottom:3%;}
+
+  .word-display{
+    position:relative;z-index:1;width:100%;display:grid;grid-template-columns:1fr auto 1fr;
+    align-items:center;font-size:clamp(2.3rem,8.5vw,5.4rem);font-weight:700;letter-spacing:-.01em;line-height:1;
+    transition:font-size .15s;
+  }
+  .word-display.is-long{font-size:clamp(1.6rem,5.5vw,3.4rem);}
+  .w-left{text-align:right;color:var(--text);}
+  .w-right{text-align:left;color:var(--text);}
+  .w-focus{text-align:center;color:var(--red);font-weight:800;text-shadow:0 0 32px rgba(255,59,48,.5);padding:0 1px;}
+
+  /* ---------- CONTROLS ---------- */
+  .controls{flex-shrink:0;padding:16px 0 26px;display:flex;flex-direction:column;gap:14px;}
+
+  .progress-row{display:flex;align-items:center;gap:12px;}
+  .progress-row .count{font-size:11.5px;font-weight:600;color:var(--text-dim);letter-spacing:.02em;white-space:nowrap;}
+  .progress-row .count.right{text-align:right;}
+
+  input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:3px;background:var(--line);border-radius:2px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--red);cursor:pointer;box-shadow:0 0 0 4px rgba(255,59,48,.18);transition:box-shadow .15s;}
+  input[type=range]::-webkit-slider-thumb:hover{box-shadow:0 0 0 6px rgba(255,59,48,.24);}
+  input[type=range]::-moz-range-thumb{width:13px;height:13px;border:none;border-radius:50%;background:var(--red);cursor:pointer;}
+  input[type=range]:disabled{opacity:.35;}
+
+  .buttons-row{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .transport{display:flex;align-items:center;gap:10px;}
+
+  .icon-btn{
+    width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--bg-soft);
+    color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;
+    transition:border-color .15s,transform .1s;
+  }
+  .icon-btn:hover:not(:disabled){border-color:var(--text-dim);}
+  .icon-btn:active:not(:disabled){transform:scale(.92);}
+  .icon-btn:disabled{opacity:.3;cursor:not-allowed;}
+
+  .play-btn{
+    width:58px;height:58px;border-radius:50%;background:var(--red);color:#0b0b0c;border:none;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    box-shadow:0 0 0 0 rgba(255,59,48,.4);transition:transform .12s,box-shadow .2s,background .15s;
+  }
+  .play-btn:hover:not(:disabled){box-shadow:0 0 0 8px rgba(255,59,48,.14);}
+  .play-btn:active:not(:disabled){transform:scale(.94);}
+  .play-btn:disabled{background:var(--bg-soft-2);color:var(--text-faint);box-shadow:none;cursor:not-allowed;}
+
+  .speed-control{display:flex;align-items:center;gap:10px;margin-left:auto;}
+  .speed-control label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);}
+  .speed-control input[type=range]{width:130px;}
+  .speed-value{font-size:12.5px;font-weight:600;color:var(--text);min-width:92px;text-align:right;}
+
+  .shortcuts-hint{margin:0;font-size:11px;color:var(--text-faint);text-align:center;letter-spacing:.01em;}
+
+  @media (max-width:580px){
+    .speed-control{margin-left:0;flex-basis:100%;justify-content:center;}
+    .buttons-row{justify-content:center;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;}
+  }
+</style>
 </head>
 <body>
+  <div class="app">
 
-<div class="main-container">
-    <div class="side-panel">
-        <h3 style="margin:0; color:#3498db; font-size:16px;">BATUHAN UÇANÇELİK</h3>
-        
-        <button class="nav-btn" onclick="updateStep(1)">▲</button>
-        <div class="display-box">
-            <span class="num-large" id="lblDeneme">1</span>
-            <span class="label-small">DENEME</span>
+    <header class="topbar">
+      <div class="brand"><span>HIZ</span><span class="slash">/</span><span>OKU</span></div>
+      <div class="status" id="status"><span class="dot"></span><span class="status-text">Dosya yüklenmedi</span></div>
+    </header>
+
+    <section class="uploader" id="uploader">
+      <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="PDF dosyası yükle">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 9l5-5 5 5"/>
+          <path d="M12 4v12"/>
+          <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+        </svg>
+        <div class="dz-text">
+          <strong>PDF'i buraya sürükleyin</strong>
+          <span>veya seçmek için tıklayın</span>
         </div>
-        <button class="nav-btn" onclick="updateStep(-1)">▼</button>
+      </div>
+      <input type="file" id="fileInput" accept="application/pdf,.pdf" hidden>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <span class="res-label label-small">DOĞRU</span>
-                <span class="stat-val val-dogru" id="lblDogru">6</span>
-            </div>
-            <div class="stat-card">
-                <span class="res-label label-small">YANLIŞ</span>
-                <span class="stat-val val-yanlis" id="lblYanlis">0</span>
-            </div>
+      <div class="dz-secondary">
+        <button type="button" class="dz-paste-toggle" id="pasteToggle">Metni doğrudan yapıştır</button>
+      </div>
+      <div class="paste-panel" id="pastePanel">
+        <textarea id="pasteArea" placeholder="Metninizi buraya yapıştırın…"></textarea>
+        <button type="button" class="use-text-btn" id="useTextBtn">Metni kullan</button>
+      </div>
+
+      <div class="progress-line"><div class="fill" id="progressFill"></div></div>
+
+      <div class="file-chip" id="fileChip">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+          <path d="M15 2v5h5"/>
+        </svg>
+        <div class="meta">
+          <strong id="fileName">dosya.pdf</strong>
+          <span id="fileMeta">—</span>
         </div>
-    </div>
+        <button class="icon-btn change-btn" id="changeBtn" aria-label="Dosyayı değiştir">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </section>
 
-    <div class="chart-area">
-        <h2 style="text-align: center; color: #2c3e50; margin-top: 0;">Performans Grafiği</h2>
-        <div class="chart-wrapper">
-            <div class="chart-container">
-                <canvas id="performanceChart"></canvas>
-            </div>
+    <main class="stage">
+      <div class="reticle">
+        <span class="reticle-tick top"></span>
+        <span class="reticle-tick bottom"></span>
+        <div class="word-display" id="wordDisplay" aria-live="polite"><span class="w-left" id="wLeft"></span><span class="w-focus" id="wFocus"></span><span class="w-right" id="wRight"></span></div>
+      </div>
+    </main>
+
+    <footer class="controls">
+      <div class="progress-row">
+        <span class="count" id="countLeft">0</span>
+        <input type="range" id="scrub" min="0" max="0" value="0" step="1" disabled aria-label="Metindeki konum">
+        <span class="count right" id="countRight">0 kelime</span>
+      </div>
+
+      <div class="buttons-row">
+        <div class="transport">
+          <button class="icon-btn" id="prevBtn" disabled aria-label="Önceki kelime">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M15 5v14L5 12z"/></svg>
+          </button>
+          <button class="play-btn" id="playBtn" disabled aria-label="Oynat / Duraklat">
+            <svg id="playIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l14-8z"/></svg>
+            <svg id="pauseIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4.5" height="16" rx="1"/><rect x="13.5" y="4" width="4.5" height="16" rx="1"/></svg>
+          </button>
+          <button class="icon-btn" id="nextBtn" disabled aria-label="Sonraki kelime">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 5v14l10-7z"/></svg>
+          </button>
         </div>
-    </div>
-</div>
 
+        <div class="speed-control">
+          <label for="speedSlider">Hız</label>
+          <input type="range" id="speedSlider" min="100" max="800" step="25" value="300">
+          <span class="speed-value" id="speedValue">300 kelime/dk</span>
+        </div>
+      </div>
+
+      <p class="shortcuts-hint">Boşluk: oynat/duraklat &nbsp;·&nbsp; ← →: kelime &nbsp;·&nbsp; ↑ ↓: hız</p>
+    </footer>
+
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-    const dogrular = [
-        6, 6, 6, 5, 5, 6, 6, 5, 6, 4, 
-        5, 6, 5, 5, 5, 4, 4, 5, 5, 5, 
-        5, 6, 5, 6, 5, 4, 3, 4, 4, 4, 
-        3, 4, 5, 5, 5, 6, 4, 6, 5, 3
-    ];
-    const yanlislar = dogrular.map(d => 6 - d);
-    const labels = Array.from({length: 40}, (_, i) => i + 1);
-    
-    let activeIdx = 0;
+(function(){
+  'use strict';
 
-    const ctx = document.getElementById('performanceChart').getContext('2d');
-    const chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Doğru Sayısı',
-                    data: dogrular,
-                    borderColor: '#2ecc71',
-                    backgroundColor: 'rgba(46, 204, 113, 0.1)',
-                    borderWidth: 3,
-                    pointRadius: (context) => context.dataIndex === activeIdx ? 10 : 5,
-                    pointBackgroundColor: (context) => context.dataIndex === activeIdx ? '#f1c40f' : '#2ecc71',
-                    pointBorderWidth: (context) => context.dataIndex === activeIdx ? 4 : 2,
-                    pointBorderColor: '#fff',
-                    tension: 0.4,
-                    fill: true,
-                    clip: false
-                },
-                {
-                    label: 'Yanlış Sayısı',
-                    data: yanlislar,
-                    borderColor: '#e74c3c',
-                    borderWidth: 2,
-                    borderDash: [5, 5],
-                    pointRadius: 0, // Yanlışları sadece çizgi olarak gösterelim ki karışmasın
-                    tension: 0.4,
-                    fill: false
-                }
-            ]
-        },
-        options: {
-            maintainAspectRatio: false,
-            responsive: true,
-            scales: {
-                x: { ticks: { autoSkip: false, font: {size: 10} } },
-                y: { beginAtZero: true, max: 7, ticks: { stepSize: 1 } }
-            },
-            plugins: {
-                legend: { display: true },
-                tooltip: { mode: 'index', intersect: false }
-            }
-        }
-    });
+  var PDF_VERSION = '3.11.174';
+  if (window.pdfjsLib) {
+    try { pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDF_VERSION + '/pdf.worker.min.js'; }
+    catch (e) {}
+  }
 
-    function updateStep(val) {
-        activeIdx += val;
-        if (activeIdx < 0) activeIdx = 0;
-        if (activeIdx >= dogrular.length) activeIdx = dogrular.length - 1;
-        
-        // Etiketleri Güncelle
-        document.getElementById('lblDeneme').innerText = activeIdx + 1;
-        document.getElementById('lblDogru').innerText = dogrular[activeIdx];
-        document.getElementById('lblYanlis').innerText = yanlislar[activeIdx];
-        
-        chart.update(); // Grafikteki noktayı güncelle
+  var dropzone = document.getElementById('dropzone');
+  var fileInput = document.getElementById('fileInput');
+  var uploader = document.getElementById('uploader');
+  var progressFill = document.getElementById('progressFill');
+  var fileNameEl = document.getElementById('fileName');
+  var fileMetaEl = document.getElementById('fileMeta');
+  var changeBtn = document.getElementById('changeBtn');
+  var pasteToggle = document.getElementById('pasteToggle');
+  var pastePanel = document.getElementById('pastePanel');
+  var pasteArea = document.getElementById('pasteArea');
+  var useTextBtn = document.getElementById('useTextBtn');
+  var statusEl = document.getElementById('status');
+  var statusText = statusEl.querySelector('.status-text');
+
+  var wordDisplay = document.getElementById('wordDisplay');
+  var wLeft = document.getElementById('wLeft');
+  var wFocus = document.getElementById('wFocus');
+  var wRight = document.getElementById('wRight');
+
+  var scrub = document.getElementById('scrub');
+  var countLeft = document.getElementById('countLeft');
+  var countRight = document.getElementById('countRight');
+
+  var prevBtn = document.getElementById('prevBtn');
+  var playBtn = document.getElementById('playBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var playIcon = document.getElementById('playIcon');
+  var pauseIcon = document.getElementById('pauseIcon');
+
+  var speedSlider = document.getElementById('speedSlider');
+  var speedValue = document.getElementById('speedValue');
+
+  var words = [];
+  var currentIndex = 0;
+  var isPlaying = false;
+  var wpm = parseInt(speedSlider.value, 10) || 300;
+  var timerId = null;
+
+  function orpIndex(word){
+    var len = word.length;
+    if (len <= 1) return 0;
+    if (len <= 5) return 1;
+    if (len <= 9) return 2;
+    if (len <= 13) return 3;
+    return Math.min(4, len - 1);
+  }
+
+  function renderWord(word){
+    word = word || '';
+    wordDisplay.classList.toggle('is-long', word.length > 12);
+    if (!word){ wLeft.textContent=''; wFocus.textContent=''; wRight.textContent=''; return; }
+    var idx = orpIndex(word);
+    wLeft.textContent = word.slice(0, idx);
+    wFocus.textContent = word.charAt(idx);
+    wRight.textContent = word.slice(idx + 1);
+  }
+
+  function renderDemo(){ renderWord('ODAK'); }
+
+  function fmt(n){ return n.toLocaleString('tr-TR'); }
+
+  function refreshRightCount(){
+    if (!words.length){ countRight.textContent = '0 kelime'; return; }
+    var remaining = words.length - currentIndex;
+    var mins = Math.max(1, Math.round(remaining / wpm));
+    countRight.textContent = fmt(words.length) + ' kelime · ~' + mins + ' dk kaldı';
+  }
+
+  function showWordAt(i){
+    if (!words.length) return;
+    i = Math.max(0, Math.min(i, words.length - 1));
+    currentIndex = i;
+    renderWord(words[i]);
+    scrub.value = i;
+    countLeft.textContent = fmt(i + 1);
+    refreshRightCount();
+  }
+
+  function getDelay(word){
+    var base = 60000 / wpm;
+    var d = base;
+    if (word.length >= 9) d += base * 0.30;
+    if (/[.,;:!?…]$/.test(word)) d += base * 0.55;
+    return d;
+  }
+
+  function setPlayIcon(playing){
+    playIcon.style.display = playing ? 'none' : 'block';
+    pauseIcon.style.display = playing ? 'block' : 'none';
+  }
+
+  function tick(){
+    if (!isPlaying) return;
+    if (currentIndex >= words.length){ pause(); return; }
+    showWordAt(currentIndex);
+    var d = getDelay(words[currentIndex]);
+    timerId = setTimeout(function(){ currentIndex++; tick(); }, d);
+  }
+
+  function play(){
+    if (!words.length || isPlaying) return;
+    if (currentIndex >= words.length - 1) currentIndex = 0;
+    isPlaying = true;
+    setPlayIcon(true);
+    tick();
+  }
+
+  function pause(){
+    isPlaying = false;
+    clearTimeout(timerId);
+    setPlayIcon(false);
+  }
+
+  function togglePlay(){ isPlaying ? pause() : play(); }
+  function stepPrev(){ pause(); showWordAt(currentIndex - 1); }
+  function stepNext(){ pause(); showWordAt(currentIndex + 1); }
+
+  function setStatus(text, ready){
+    statusText.textContent = text;
+    statusEl.classList.toggle('is-ready', !!ready);
+  }
+
+  function setUploaderState(state){
+    uploader.classList.remove('is-loading','is-loaded','is-error');
+    if (state !== 'idle') uploader.classList.add('is-' + state);
+  }
+
+  function tokenize(text){
+    return text.replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
+  }
+
+  function enableControls(on){
+    scrub.disabled = !on;
+    prevBtn.disabled = !on;
+    playBtn.disabled = !on;
+    nextBtn.disabled = !on;
+  }
+
+  function loadWords(tokens){
+    pause();
+    words = tokens;
+    currentIndex = 0;
+    scrub.max = Math.max(0, words.length - 1);
+    enableControls(words.length > 0);
+    showWordAt(0);
+    var mins = Math.max(1, Math.round(words.length / wpm));
+    fileMetaEl.textContent = fmt(words.length) + ' kelime · ~' + mins + ' dk';
+    setStatus(fmt(words.length) + ' kelime yüklendi', true);
+  }
+
+  async function handleFile(file){
+    if (!file) return;
+    if (file.type !== 'application/pdf' && !/\.pdf$/i.test(file.name)){
+      setStatus('Sadece PDF dosyaları desteklenir', false);
+      return;
     }
-</script>
+    if (!window.pdfjsLib){
+      setUploaderState('error');
+      setStatus('PDF okuyucu yüklenemedi — metni yapıştırın', false);
+      return;
+    }
+    setUploaderState('loading');
+    progressFill.style.width = '0%';
+    setStatus('Metin çıkarılıyor…', false);
+    try {
+      var buf = await file.arrayBuffer();
+      var pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+      var full = '';
+      for (var i = 1; i <= pdf.numPages; i++){
+        var page = await pdf.getPage(i);
+        var content = await page.getTextContent();
+        full += content.items.map(function(it){ return it.str; }).join(' ') + ' ';
+        progressFill.style.width = Math.round((i / pdf.numPages) * 100) + '%';
+      }
+      var tokens = tokenize(full);
+      if (!tokens.length){
+        setUploaderState('error');
+        setStatus('Metin bulunamadı — taranmış PDF olabilir', false);
+        return;
+      }
+      fileNameEl.textContent = file.name;
+      setUploaderState('loaded');
+      loadWords(tokens);
+    } catch (err){
+      setUploaderState('error');
+      setStatus('PDF okunamadı — metni yapıştırın', false);
+    }
+  }
 
+  dropzone.addEventListener('click', function(){ fileInput.click(); });
+  dropzone.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); fileInput.click(); }
+  });
+  fileInput.addEventListener('change', function(e){ handleFile(e.target.files[0]); fileInput.value=''; });
+
+  ['dragenter','dragover'].forEach(function(evt){
+    dropzone.addEventListener(evt, function(e){ e.preventDefault(); dropzone.classList.add('is-dragover'); });
+  });
+  ['dragleave','drop'].forEach(function(evt){
+    dropzone.addEventListener(evt, function(e){ e.preventDefault(); dropzone.classList.remove('is-dragover'); });
+  });
+  dropzone.addEventListener('drop', function(e){
+    var file = e.dataTransfer.files && e.dataTransfer.files[0];
+    handleFile(file);
+  });
+  window.addEventListener('dragover', function(e){ e.preventDefault(); });
+  window.addEventListener('drop', function(e){ e.preventDefault(); });
+
+  pasteToggle.addEventListener('click', function(){ pastePanel.classList.toggle('is-open'); });
+  useTextBtn.addEventListener('click', function(){
+    var tokens = tokenize(pasteArea.value);
+    if (!tokens.length) return;
+    fileNameEl.textContent = 'Yapıştırılan metin';
+    fileMetaEl.textContent = fmt(tokens.length) + ' kelime';
+    setUploaderState('loaded');
+    loadWords(tokens);
+    pastePanel.classList.remove('is-open');
+  });
+
+  changeBtn.addEventListener('click', function(){
+    pause();
+    words = [];
+    setUploaderState('idle');
+    setStatus('Dosya yüklenmedi', false);
+    renderDemo();
+    scrub.value = 0; scrub.max = 0;
+    countLeft.textContent = '0';
+    countRight.textContent = '0 kelime';
+    enableControls(false);
+  });
+
+  scrub.addEventListener('input', function(){ pause(); showWordAt(parseInt(scrub.value, 10)); });
+  speedSlider.addEventListener('input', function(){
+    wpm = parseInt(speedSlider.value, 10);
+    speedValue.textContent = wpm + ' kelime/dk';
+    refreshRightCount();
+  });
+
+  prevBtn.addEventListener('click', stepPrev);
+  nextBtn.addEventListener('click', stepNext);
+  playBtn.addEventListener('click', togglePlay);
+
+  document.addEventListener('keydown', function(e){
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'TEXTAREA' || tag === 'INPUT') return;
+    if (!words.length) return;
+    if (e.code === 'Space'){ e.preventDefault(); togglePlay(); }
+    else if (e.code === 'ArrowRight'){ stepNext(); }
+    else if (e.code === 'ArrowLeft'){ stepPrev(); }
+    else if (e.code === 'ArrowUp'){ e.preventDefault(); speedSlider.value = Math.min(800, wpm + 25); speedSlider.dispatchEvent(new Event('input')); }
+    else if (e.code === 'ArrowDown'){ e.preventDefault(); speedSlider.value = Math.max(100, wpm - 25); speedSlider.dispatchEvent(new Event('input')); }
+  });
+
+  renderDemo();
+  speedValue.textContent = wpm + ' kelime/dk';
+})();
+</script>
 </body>
 </html>
