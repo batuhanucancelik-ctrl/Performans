@@ -222,6 +222,41 @@ section{padding:5.5rem 0;}
 }
 .btn:hover{ background:var(--gunbatimi-deep); }
 
+/* ---------- Müzik Kontrolü ---------- */
+.music-ctrl{
+  position:fixed; right:1.1rem; bottom:1.1rem; z-index:40;
+  width:52px; height:52px; border-radius:50%;
+  background:var(--gece); border:1.5px solid var(--altin);
+  box-shadow:0 3px 14px rgba(0,0,0,.35);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; -webkit-tap-highlight-color:transparent;
+  transition:transform .2s ease, background .25s ease;
+}
+.music-ctrl:hover{ background:var(--gece2); }
+.music-ctrl:active{ transform:scale(.92); }
+.music-ctrl svg{ width:22px; height:22px; }
+.music-ctrl .note-icon{ fill:var(--yasemin); }
+.music-ctrl .bars{ display:flex; align-items:flex-end; gap:2.5px; height:18px; }
+.music-ctrl .bars span{
+  display:block; width:3px; background:var(--altin); border-radius:1px;
+  animation:eq 1s ease-in-out infinite;
+}
+.music-ctrl .bars span:nth-child(1){ height:6px; animation-delay:-.3s; }
+.music-ctrl .bars span:nth-child(2){ height:14px; animation-delay:-.1s; }
+.music-ctrl .bars span:nth-child(3){ height:9px; animation-delay:-.5s; }
+.music-ctrl.paused .bars span{ animation-play-state:paused; height:4px !important; }
+@keyframes eq{ 0%,100%{ transform:scaleY(.4);} 50%{ transform:scaleY(1);} }
+
+.music-hint{
+  position:fixed; right:1.1rem; bottom:4.3rem; z-index:40;
+  background:var(--gece); color:var(--text-on-gece); border:1px solid var(--altin);
+  font-family:var(--sans); font-size:.78rem; padding:.5rem .8rem; border-radius:6px;
+  opacity:0; pointer-events:none; transform:translateY(6px);
+  transition:opacity .3s ease, transform .3s ease;
+  white-space:nowrap;
+}
+.music-hint.show{ opacity:1; transform:translateY(0); }
+
 .dress{ text-align:center;}
 .dress p{ max-width:44ch; margin:0 auto 1.25rem; font-size:1rem;}
 .swatches{ display:flex; gap:.6rem; justify-content:center;}
@@ -255,6 +290,19 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
 </style>
 </head>
 <body>
+
+<audio id="bg-music" src="esra.mp3" loop preload="auto"></audio>
+<button class="music-ctrl paused" id="music-toggle" aria-label="Müziği başlat/durdur" type="button">
+  <svg class="note-icon" viewBox="0 0 24 24" id="note-icon" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--yasemin)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 18V5l12-2v13"/>
+    <circle cx="6" cy="18" r="3"/>
+    <circle cx="18" cy="16" r="3"/>
+  </svg>
+  <span class="bars" id="eq-bars" style="display:none;">
+    <span></span><span></span><span></span>
+  </span>
+</button>
+<div class="music-hint" id="music-hint">Sesi açmak için dokunun 🎵</div>
 
 <header class="hero">
   <svg class="sprig" viewBox="0 0 420 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -571,6 +619,72 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
       form.reset();
       updateCountVisibility();
     });
+  }
+
+  // ---- Müzik ----
+  var audio = document.getElementById('bg-music');
+  var toggleBtn = document.getElementById('music-toggle');
+  var hint = document.getElementById('music-hint');
+  var eqBars = document.getElementById('eq-bars');
+  var noteIcon = document.getElementById('note-icon');
+  var hintTimer = null;
+
+  function setPlayingUI(isPlaying){
+    if(isPlaying){
+      toggleBtn.classList.remove('paused');
+      eqBars.style.display = 'flex';
+      noteIcon.style.display = 'none';
+    } else {
+      toggleBtn.classList.add('paused');
+      eqBars.style.display = 'none';
+      noteIcon.style.display = 'block';
+    }
+  }
+
+  function showHint(){
+    if(!hint) return;
+    hint.classList.add('show');
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(function(){ hint.classList.remove('show'); }, 3200);
+  }
+
+  function playAudio(){
+    var p = audio.play();
+    if(p !== undefined){
+      p.then(function(){
+        setPlayingUI(true);
+      }).catch(function(){
+        // Tarayıcı otomatik oynatmayı engelledi, kullanıcı etkileşimi bekleniyor
+        setPlayingUI(false);
+        showHint();
+        armFirstInteractionPlay();
+      });
+    }
+  }
+
+  function armFirstInteractionPlay(){
+    var events = ['touchstart','click','keydown','scroll'];
+    function handler(){
+      audio.play().then(function(){
+        setPlayingUI(true);
+        events.forEach(function(ev){ document.removeEventListener(ev, handler); });
+      }).catch(function(){});
+    }
+    events.forEach(function(ev){ document.addEventListener(ev, handler, {once:false, passive:true}); });
+  }
+
+  if(audio && toggleBtn){
+    toggleBtn.addEventListener('click', function(){
+      if(audio.paused){
+        audio.play().then(function(){ setPlayingUI(true); }).catch(function(){});
+      } else {
+        audio.pause();
+        setPlayingUI(false);
+      }
+    });
+
+    // Sayfa yüklenince otomatik çalmayı dene
+    playAudio();
   }
 })();
 </script>
