@@ -501,7 +501,7 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
       </div>
       <button type="submit" class="btn" id="r-submit">Cevabımı Gönder</button>
       <p class="rsvp-status" id="r-status"></p>
-      <p class="rsvp-note">Şu ana kadar <strong id="r-total">…</strong> kişi katılacağını bildirdi. Verdiğiniz yanıt bu davetiyeyi görüntüleyen herkesle paylaşılır.</p>
+      <p class="rsvp-note">Cevabınız Esra &amp; Batuhan'a doğrudan iletilecektir.</p>
     </form>
   </div>
  </section>
@@ -569,24 +569,11 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
   // ---- RSVP ----
   var form = document.getElementById('rsvp-form');
   var statusEl = document.getElementById('r-status');
-  var totalEl = document.getElementById('r-total');
   var countField = document.getElementById('count-field');
   var attendRadios = document.querySelectorAll('input[name="attending"]');
+  var submitBtn = document.getElementById('r-submit');
 
-  var STORAGE_KEY = 'esra-batuhan-rsvp-total';
-
-  function loadTotal(){
-    try{
-      var v = window.localStorage.getItem(STORAGE_KEY);
-      return v ? parseInt(v, 10) : 0;
-    }catch(e){ return 0; }
-  }
-  function saveTotal(v){
-    try{ window.localStorage.setItem(STORAGE_KEY, String(v)); }catch(e){}
-  }
-
-  var total = loadTotal();
-  if(totalEl) totalEl.textContent = total;
+  var RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwOYnhM7QM1rKcGvqmSL-a5y5WqCxxu3_ADPIEBJ-ABtAud65bNoJNStMpcNURur8W5tQ/exec';
 
   function updateCountVisibility(){
     var attending = document.querySelector('input[name="attending"]:checked');
@@ -600,24 +587,45 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
   if(form){
     form.addEventListener('submit', function(e){
       e.preventDefault();
+      var nameInput = document.getElementById('r-name');
       var attending = document.querySelector('input[name="attending"]:checked');
       var isYes = attending && attending.value === 'evet';
       var countInput = document.getElementById('r-count');
+      var msgInput = document.getElementById('r-msg');
       var count = isYes ? Math.max(1, parseInt(countInput.value, 10) || 1) : 0;
 
-      if(isYes){
-        total += count;
-        saveTotal(total);
-        if(totalEl) totalEl.textContent = total;
-      }
+      var payload = {
+        name: nameInput ? nameInput.value : '',
+        attending: attending ? attending.value : '',
+        count: count,
+        message: msgInput ? msgInput.value : ''
+      };
 
-      if(statusEl){
-        statusEl.textContent = isYes
-          ? 'Teşekkürler! Cevabınız kaydedildi, sizi ağırlamak için sabırsızlanıyoruz.'
-          : 'Anlıyoruz, bize haber verdiğiniz için teşekkürler.';
-      }
-      form.reset();
-      updateCountVisibility();
+      if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Gönderiliyor…'; }
+      if(statusEl){ statusEl.textContent = ''; }
+
+      fetch(RSVP_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      })
+      .then(function(){
+        if(statusEl){
+          statusEl.textContent = isYes
+            ? 'Teşekkürler! Cevabınız kaydedildi, sizi ağırlamak için sabırsızlanıyoruz.'
+            : 'Anlıyoruz, bize haber verdiğiniz için teşekkürler.';
+        }
+        form.reset();
+        updateCountVisibility();
+      })
+      .catch(function(){
+        if(statusEl){
+          statusEl.textContent = 'Bir sorun oluştu, lütfen tekrar deneyin.';
+        }
+      })
+      .finally(function(){
+        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = 'Cevabımı Gönder'; }
+      });
     });
   }
 
