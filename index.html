@@ -197,19 +197,15 @@ section{padding:5.5rem 0;}
   border-radius:2px; padding:.5rem .5rem 1.1rem;
   background:var(--yasemin); box-shadow:0 1px 3px rgba(0,0,0,.15);
 }
-.g-photo{ border-radius:1px; display:flex; align-items:center; justify-content:center; text-align:center; padding:.6rem;}
+.g-photo{ border-radius:1px; display:flex; align-items:center; justify-content:center; text-align:center; padding:.6rem; overflow:hidden;}
 .g-photo span{ font-family:var(--sans); font-size:.72rem; color:rgba(255,255,255,.88); line-height:1.3;}
+.g-photo img{ width:100%; height:100%; object-fit:cover; display:block;}
 .g-cap{ font-family:var(--script); font-size:1.2rem; text-align:center; margin-top:.4rem; color:var(--text);}
 .ar-tall{aspect-ratio:4/5;}
 .ar-square{aspect-ratio:1/1;}
 .ar-wide{aspect-ratio:5/4;}
 .ar-portrait{aspect-ratio:3/4;}
-.g-photo.c1{background:linear-gradient(135deg,var(--deniz),var(--gece2));}
-.g-photo.c2{background:linear-gradient(135deg,var(--altin),#8a6c1f);}
-.g-photo.c3{background:linear-gradient(135deg,var(--gunbatimi),var(--gunbatimi-deep));}
-.g-photo.c4{background:linear-gradient(135deg,var(--deniz-light),var(--deniz));}
-.g-photo.c5{background:linear-gradient(135deg,var(--gece2),var(--gece));}
-.g-photo.c6{background:linear-gradient(135deg,var(--gunbatimi),var(--altin));}
+
 
 .location{ background:var(--gece2); color:var(--text-on-gece); text-align:center;}
 .location .section-head{color:var(--yasemin);}
@@ -444,12 +440,12 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
   <div class="wrap">
    <h2 class="section-head">Anılarımızdan</h2>
    <div class="g-grid">
-     <div class="g-frame"><div class="g-photo c1 ar-tall"><span>Fotoğrafınızı buraya ekleyin</span></div><div class="g-cap">Kordon'da ilk buluşma</div></div>
-     <div class="g-frame"><div class="g-photo c2 ar-square"><span>Fotoğrafınızı buraya ekleyin</span></div><div class="g-cap">Alaçatı, 2021</div></div>
-     <div class="g-frame"><div class="g-photo c3 ar-portrait"><span>Fotoğrafınızı buraya ekleyin</span></div><div class="g-cap">Karşıyaka'daki evimiz</div></div>
-     <div class="g-frame"><div class="g-photo c4 ar-wide"><span>Fotoğrafınızı buraya ekleyin</span></div><div class="g-cap">Asansör'de teklif</div></div>
-     <div class="g-frame"><div class="g-photo c5 ar-tall"><span>Fotoğrafınızı buraya ekleyin</span></div><div class="g-cap">Urla bağları</div></div>
-     <div class="g-frame"><div class="g-photo c6 ar-square"><span>Fotoğrafınızı buraya ekleyin</span></div><div class="g-cap">Kemeraltı'nda bir öğleden sonra</div></div>
+     <div class="g-frame"><div class="g-photo ar-tall"><img src="gallery/g1.jpg" alt="Kordon'da ilk buluşma" loading="lazy"></div><div class="g-cap">Kordon'da ilk buluşma</div></div>
+     <div class="g-frame"><div class="g-photo ar-square"><img src="gallery/g2.jpg" alt="Alaçatı, 2021" loading="lazy"></div><div class="g-cap">Alaçatı, 2021</div></div>
+     <div class="g-frame"><div class="g-photo ar-portrait"><img src="gallery/g3.jpg" alt="Karşıyaka'daki evimiz" loading="lazy"></div><div class="g-cap">Karşıyaka'daki evimiz</div></div>
+     <div class="g-frame"><div class="g-photo ar-wide"><img src="gallery/g4.jpg" alt="Asansör'de teklif" loading="lazy"></div><div class="g-cap">Asansör'de teklif</div></div>
+     <div class="g-frame"><div class="g-photo ar-tall"><img src="gallery/g5.jpg" alt="Urla bağları" loading="lazy"></div><div class="g-cap">Urla bağları</div></div>
+     <div class="g-frame"><div class="g-photo ar-square"><img src="gallery/g6.jpg" alt="Kemeraltı'nda bir öğleden sonra" loading="lazy"></div><div class="g-cap">Kemeraltı'nda bir öğleden sonra</div></div>
    </div>
   </div>
  </section>
