@@ -29,35 +29,46 @@
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
-  margin:0;
-  background:var(--yasemin);
-  color:var(--text);
-  font-family:var(--sans);
-  line-height:1.65;
-  -webkit-font-smoothing:antialiased;
+  margin:0; background:var(--yasemin); color:var(--text);
+  font-family:var(--sans); line-height:1.65;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
 }
 svg{display:block;max-width:100%;}
 a{color:inherit;}
-button, input, textarea{font-family:inherit;}
+button, input, textarea, select{font-family:inherit;}
 ::selection{background:var(--gunbatimi); color:var(--yasemin);}
 :focus-visible{outline:2px solid var(--gunbatimi); outline-offset:3px;}
 .wrap{max-width:var(--max); margin:0 auto; padding:0 1.5rem;}
 
-/* ---------- Hero ---------- */
+.scroll-progress{
+  position:fixed; top:0; left:0; height:2px; width:0%;
+  background:linear-gradient(90deg, var(--gunbatimi), var(--altin), var(--gunbatimi));
+  z-index:999; transition:width .1s linear;
+  box-shadow:0 0 10px rgba(224,113,63,.5);
+}
+.particles{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden;}
+.particle{
+  position:absolute; width:5px; height:5px;
+  background:radial-gradient(circle, var(--altin), transparent 70%);
+  border-radius:50%; opacity:0;
+  animation:floatUp linear infinite;
+}
+@keyframes floatUp{
+  0%{transform:translateY(100vh) rotate(0deg); opacity:0;}
+  10%{opacity:.6;}
+  90%{opacity:.6;}
+  100%{transform:translateY(-10vh) rotate(360deg); opacity:0;}
+}
+
+/* HERO */
 .hero{
-  min-height:100svh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
+  min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center;
   text-align:center;
   background:
     radial-gradient(ellipse at 50% 100%, rgba(224,113,63,0.28), transparent 62%),
     linear-gradient(180deg, var(--gece) 0%, var(--gece2) 100%);
-  color:var(--text-on-gece);
-  padding:3rem 1.5rem 5rem;
-  position:relative;
-  overflow:visible;
+  color:var(--text-on-gece); padding:3rem 1.5rem 5rem;
+  position:relative; overflow:visible;
 }
 .sprig{width:min(300px, 68vw); height:auto; margin:0 auto 1.25rem; overflow:visible;}
 .stem-line{
@@ -65,12 +76,9 @@ button, input, textarea{font-family:inherit;}
   stroke-dasharray:600; stroke-dashoffset:600;
   animation:draw 2.2s ease-out .3s forwards;
 }
-.jasmine-flower{
-  transform-box:fill-box; transform-origin:center;
-}
+.jasmine-flower{transform-box:fill-box; transform-origin:center;}
 .jasmine-flower .bloom{
-  opacity:0;
-  transform-box:fill-box; transform-origin:center;
+  opacity:0; transform-box:fill-box; transform-origin:center;
   animation:bloom .7s cubic-bezier(.25,1.4,.4,1) both;
 }
 .jasmine-flower ellipse{ fill:var(--yasemin); stroke:var(--altin); stroke-width:.4; }
@@ -82,108 +90,125 @@ button, input, textarea{font-family:inherit;}
 .jasmine-flower.f5 .bloom{animation-delay:1.7s;}
 .jasmine-flower.f6 .bloom{animation-delay:2.0s;}
 .jasmine-flower.f7 .bloom{animation-delay:2.3s;}
-footer .jasmine-flower .bloom{ animation:none; opacity:1; transform:scale(1) !important; }
+footer .jasmine-flower .bloom{animation:none; opacity:1; transform:scale(1) !important;}
 @keyframes draw{to{stroke-dashoffset:0;}}
 @keyframes bloom{
-  0%{ opacity:0; transform:scale(0) rotate(-15deg); }
-  60%{ opacity:1; transform:scale(1.15) rotate(4deg); }
-  100%{ opacity:1; transform:scale(1) rotate(0deg); }
+  0%{opacity:0; transform:scale(0) rotate(-15deg);}
+  60%{opacity:1; transform:scale(1.15) rotate(4deg);}
+  100%{opacity:1; transform:scale(1) rotate(0deg);}
 }
 .names{
   font-family:var(--script);
   font-size:clamp(3.8rem, 16vw, 8rem);
-  line-height:1;
-  color:var(--yasemin);
-  margin:0;
-  opacity:0;
+  line-height:1; color:var(--yasemin); margin:0; opacity:0;
   animation:rise .9s ease-out 2.2s forwards;
 }
 .tagline{
-  font-family:var(--serif);
-  font-style:italic;
+  font-family:var(--serif); font-style:italic;
   font-size:clamp(1.05rem, 2.4vw, 1.35rem);
-  color:var(--text-on-gece);
-  max-width:32ch;
-  margin:.75rem auto 0;
-  opacity:0;
-  animation:rise .9s ease-out 2.5s forwards;
+  color:var(--text-on-gece); max-width:32ch; margin:.75rem auto 0;
+  opacity:0; animation:rise .9s ease-out 2.5s forwards;
 }
 .datebar{
-  margin-top:1.75rem;
-  font-size:.95rem;
-  letter-spacing:.03em;
-  color:var(--altin);
-  opacity:0;
-  animation:rise .9s ease-out 2.7s forwards;
+  margin-top:1.75rem; font-size:.95rem; letter-spacing:.03em; color:var(--altin);
+  opacity:0; animation:rise .9s ease-out 2.7s forwards;
 }
 @keyframes rise{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);}}
 .countdown{
   display:flex; gap:1.25rem; margin-top:2.25rem;
   opacity:0; animation:rise .9s ease-out 2.9s forwards;
 }
-.countdown div{ display:flex; flex-direction:column; align-items:center; min-width:52px;}
-.countdown .num{ font-family:var(--serif); font-size:clamp(1.6rem,5vw,2.4rem); font-weight:500; color:var(--yasemin);}
-.countdown .lbl{ font-size:.72rem; color:var(--deniz-light); margin-top:.15rem;}
+.countdown div{display:flex; flex-direction:column; align-items:center; min-width:52px;}
+.countdown .num{font-family:var(--serif); font-size:clamp(1.6rem,5vw,2.4rem); font-weight:500; color:var(--yasemin);}
+.countdown .lbl{font-size:.72rem; color:var(--deniz-light); margin-top:.15rem;}
 .scrollcue{
   position:absolute; bottom:2.25rem; left:50%; transform:translateX(-50%);
   width:1px; height:30px; background:linear-gradient(var(--altin), transparent);
-  animation:cue 2s ease-in-out infinite;
-  z-index:1;
+  animation:cue 2s ease-in-out infinite; z-index:1;
 }
 @keyframes cue{0%,100%{opacity:.25;} 50%{opacity:.9;}}
-.wave{ position:absolute; left:0; right:0; bottom:-1px; line-height:0;}
-.wave svg{ width:100%; height:64px; display:block;}
-.wave-fill{ fill:var(--yasemin); }
-@media(min-width:680px){ .wave svg{ height:96px; } }
+.wave{position:absolute; left:0; right:0; bottom:-1px; line-height:0;}
+.wave svg{width:100%; height:64px; display:block;}
+.wave-fill{fill:var(--yasemin);}
+@media(min-width:680px){.wave svg{height:96px;}}
 
-/* ---------- Sections ---------- */
-section{padding:5.5rem 0;}
-.section-icon{ display:block; width:30px; height:30px; margin:0 auto 1rem; }
+section{padding:5.5rem 0; position:relative;}
+.section-icon{display:block; width:30px; height:30px; margin:0 auto 1rem;}
 .section-head{
   font-family:var(--serif); font-weight:500;
   font-size:clamp(1.7rem,4vw,2.3rem);
   text-align:center; margin:0 0 2.5rem;
 }
 .invite p{
-  font-family:var(--serif); font-style:italic; font-size:clamp(1.1rem,2.6vw,1.35rem);
+  font-family:var(--serif); font-style:italic;
+  font-size:clamp(1.1rem,2.6vw,1.35rem);
   text-align:center; max-width:52ch; margin:0 auto 1.5rem; color:var(--text);
 }
-.invite .sign{ font-family:var(--script); font-size:2.3rem; color:var(--gunbatimi); font-style:normal; margin-top:.5rem;}
-.story{ background:var(--yasemin2);}
+.invite .sign{font-family:var(--script); font-size:2.3rem; color:var(--gunbatimi); font-style:normal; margin-top:.5rem;}
+.story{background:var(--yasemin2);}
 
-/* ---------- Timeline ---------- */
-.timeline{ position:relative; max-width:560px; margin:0 auto; }
+/* Timeline */
+.timeline{position:relative; max-width:560px; margin:0 auto;}
 .tl-item{
   position:relative; display:grid; grid-template-columns:44px 1fr; column-gap:1.1rem;
-  margin-bottom:2.2rem; opacity:0; transform:translateY(18px);
-  transition:opacity .7s ease, transform .7s ease;
+  margin-bottom:2.2rem;
+  opacity:.35; transform:translateY(18px) scale(.98);
+  transition:opacity .6s ease, transform .6s ease;
 }
-.tl-item.in-view{ opacity:1; transform:translateY(0); }
-.tl-item:last-child{ margin-bottom:0; }
+.tl-item.in-view{opacity:1; transform:translateY(0) scale(1);}
+.tl-item:last-child{margin-bottom:0;}
 .tl-item::before{
   content:''; position:absolute; left:21px; top:44px; bottom:-2.2rem; width:2px;
-  background:var(--altin); opacity:.35; transform:scaleY(0); transform-origin:top;
-  transition:transform .9s ease .25s;
+  background:linear-gradient(180deg, var(--altin), rgba(201,162,39,.35));
+  transform:scaleY(0); transform-origin:top;
+  transition:transform .9s ease .2s;
 }
-.tl-item.in-view::before{ transform:scaleY(1); }
-.tl-item:last-child::before{ display:none; }
+.tl-item.in-view::before{transform:scaleY(1);}
+.tl-item:last-child::before{display:none;}
 .tl-icon{
-  width:44px; height:44px; border-radius:50%; background:var(--yasemin); border:1.5px solid var(--altin);
-  display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(20,49,58,.14);
+  width:44px; height:44px; border-radius:50%; background:var(--yasemin);
+  border:1.5px solid var(--altin);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 2px 6px rgba(20,49,58,.14);
   position:relative; z-index:2;
+  transition:transform .6s cubic-bezier(.3,1.5,.4,1), box-shadow .6s;
 }
-.tl-icon svg{ width:20px; height:20px; }
-.tl-card{ background:var(--yasemin); border-radius:3px; padding:.9rem 1.15rem; box-shadow:0 1px 5px rgba(0,0,0,.06); align-self:start; }
-.tl-year{ font-family:var(--serif); font-weight:600; color:var(--gunbatimi); font-size:1.15rem; margin-bottom:.2rem;}
-.tl-text{ font-size:.98rem; color:var(--text);}
+.tl-item.in-view .tl-icon{
+  transform:scale(1.15) rotate(8deg);
+  box-shadow:0 0 0 6px rgba(201,162,39,.15), 0 2px 12px rgba(224,113,63,.3);
+}
+.tl-icon svg{width:20px; height:20px;}
+.tl-card{
+  background:var(--yasemin); border-radius:3px; padding:.9rem 1.15rem;
+  box-shadow:0 1px 5px rgba(0,0,0,.06); align-self:start;
+  transition:transform .5s ease, box-shadow .5s ease;
+  position:relative; overflow:hidden;
+}
+.tl-card::before{
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:linear-gradient(180deg, var(--gunbatimi), var(--altin));
+  transform:scaleY(0); transform-origin:top;
+  transition:transform .6s ease .25s;
+}
+.tl-item.in-view .tl-card::before{transform:scaleY(1);}
+.tl-item.in-view .tl-card{
+  transform:translateX(6px);
+  box-shadow:0 8px 24px rgba(20,49,58,.12);
+}
+.tl-year{font-family:var(--serif); font-weight:600; color:var(--gunbatimi); font-size:1.15rem; margin-bottom:.2rem;}
+.tl-text{font-size:.98rem; color:var(--text);}
 
-/* ---------- Program ---------- */
-.program{ background:var(--gece); color:var(--text-on-gece);}
+/* Program */
+.program{background:var(--gece); color:var(--text-on-gece);}
 .program .section-head{color:var(--yasemin);}
-.prog-grid{ display:grid; gap:2.5rem; max-width:600px; margin:0 auto; position:relative; opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
-.prog-grid.in-view{ opacity:1; transform:translateY(0); }
-.prog-div{ display:none; }
-.prog-amp{ display:none; }
+.prog-grid{
+  display:grid; gap:2.5rem; max-width:600px; margin:0 auto;
+  position:relative; opacity:0; transform:translateY(18px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.prog-grid.in-view{opacity:1; transform:translateY(0);}
+.prog-div{display:none;}
+.prog-amp{display:none;}
 @media(min-width:680px){
   .prog-grid{grid-template-columns:1fr 1px 1fr; align-items:stretch;}
   .prog-div{display:block; background:var(--altin); opacity:.4;}
@@ -193,25 +218,34 @@ section{padding:5.5rem 0;}
     width:34px; height:34px; border-radius:50%;
     font-family:var(--script); font-size:1.4rem; color:var(--altin);
     background:var(--gece);
+    box-shadow:0 0 0 6px var(--gece), 0 0 20px rgba(201,162,39,.4);
+    animation:pulseAmp 3s ease-in-out infinite;
+  }
+  @keyframes pulseAmp{
+    0%,100%{box-shadow:0 0 0 6px var(--gece), 0 0 20px rgba(201,162,39,.4);}
+    50%{box-shadow:0 0 0 6px var(--gece), 0 0 40px rgba(201,162,39,.7);}
   }
 }
-.prog-block{ text-align:center;}
+.prog-block{text-align:center; position:relative; transition:transform .5s ease;}
+.prog-block:hover{transform:translateY(-6px);}
 .prog-icon{
   width:52px; height:52px; margin:0 auto .9rem; border-radius:50%;
   background:rgba(201,162,39,.12); border:1.5px solid var(--altin);
   display:flex; align-items:center; justify-content:center;
+  transition:transform .6s cubic-bezier(.3,1.5,.4,1), background .4s;
 }
-.prog-icon svg{ width:24px; height:24px; }
-.prog-block h3{ font-family:var(--serif); font-weight:500; font-size:1.4rem; margin:0 0 .4rem; color:var(--yasemin);}
-.prog-time{ font-family:var(--serif); font-size:2.1rem; color:var(--altin); margin:.2rem 0;}
-.prog-loc{ font-size:.95rem; color:var(--text-on-gece); margin:.3rem 0;}
-.prog-note{ font-size:.82rem; color:var(--deniz-light); margin-top:.5rem;}
+.prog-block:hover .prog-icon{transform:rotate(360deg); background:rgba(201,162,39,.25);}
+.prog-icon svg{width:24px; height:24px;}
+.prog-block h3{font-family:var(--serif); font-weight:500; font-size:1.4rem; margin:0 0 .4rem; color:var(--yasemin);}
+.prog-time{font-family:var(--serif); font-size:2.1rem; color:var(--altin); margin:.2rem 0;}
+.prog-loc{font-size:.95rem; color:var(--text-on-gece); margin:.3rem 0;}
+.prog-note{font-size:.82rem; color:var(--deniz-light); margin-top:.5rem;}
 
-/* ---------- Gallery ---------- */
-.g-grid{ column-count:2; column-gap:1.1rem; max-width:600px; margin:0 auto;}
-@media(min-width:600px){ .g-grid{ column-count:3; } }
-.g-grid > *{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
-.g-grid.in-view > *{ opacity:1; transform:translateY(0); }
+/* Gallery */
+.g-grid{column-count:2; column-gap:1.1rem; max-width:600px; margin:0 auto;}
+@media(min-width:600px){.g-grid{column-count:3;}}
+.g-grid > *{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+.g-grid.in-view > *{opacity:1; transform:translateY(0);}
 .g-grid.in-view > *:nth-child(1){transition-delay:.05s;}
 .g-grid.in-view > *:nth-child(2){transition-delay:.15s;}
 .g-grid.in-view > *:nth-child(3){transition-delay:.25s;}
@@ -222,181 +256,499 @@ section{padding:5.5rem 0;}
   break-inside:avoid; margin:0 0 1.1rem;
   border-radius:2px; padding:.5rem .5rem 1.1rem;
   background:var(--yasemin); box-shadow:0 1px 3px rgba(0,0,0,.15);
+  transition:transform .5s cubic-bezier(.3,1.2,.4,1), box-shadow .5s;
 }
-.g-photo{ position:relative; border-radius:1px; display:flex; align-items:center; justify-content:center; text-align:center; padding:.6rem; overflow:hidden; cursor:pointer;}
-.g-photo span.placeholder{ font-family:var(--sans); font-size:.72rem; color:rgba(255,255,255,.88); line-height:1.3;}
-.g-photo img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease;}
-.g-photo:hover img{ transform:scale(1.06); }
-.g-photo::after{ content:''; position:absolute; inset:0; background:rgba(20,49,58,0); transition:background .3s ease; }
-.g-photo:hover::after{ background:rgba(20,49,58,.15); }
+.g-frame:hover{transform:translateY(-6px) rotate(-.5deg); box-shadow:0 12px 30px rgba(20,49,58,.18);}
+.g-photo{
+  position:relative; border-radius:1px; display:flex; align-items:center; justify-content:center;
+  text-align:center; padding:.6rem; overflow:hidden; cursor:pointer; background:var(--gece2);
+}
+.g-photo img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease;}
+.g-photo:hover img{transform:scale(1.06);}
+.g-photo::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg, transparent 50%, rgba(20,49,58,.4));
+  opacity:0; transition:opacity .3s ease;
+}
+.g-photo:hover::after{opacity:1;}
 .g-expand{
   position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(.7);
   width:34px; height:34px; border-radius:50%; background:rgba(250,246,234,.92);
   display:flex; align-items:center; justify-content:center; opacity:0;
-  transition:opacity .3s ease, transform .3s ease; pointer-events:none;
+  transition:opacity .3s ease, transform .3s ease; pointer-events:none; z-index:2;
 }
-.g-photo:hover .g-expand{ opacity:1; transform:translate(-50%,-50%) scale(1); }
-.g-expand svg{ width:16px; height:16px; }
-.g-cap{ font-family:var(--script); font-size:1.2rem; text-align:center; margin-top:.4rem; color:var(--text);}
+.g-photo:hover .g-expand{opacity:1; transform:translate(-50%,-50%) scale(1);}
+.g-expand svg{width:16px; height:16px;}
+.g-cap{font-family:var(--script); font-size:1.2rem; text-align:center; margin-top:.4rem; color:var(--text);}
 .ar-tall{aspect-ratio:4/5;}
 .ar-square{aspect-ratio:1/1;}
 .ar-wide{aspect-ratio:5/4;}
 .ar-portrait{aspect-ratio:3/4;}
 
-/* ---------- Lightbox ---------- */
+/* Lightbox */
 .lightbox{
   position:fixed; inset:0; background:rgba(20,26,29,.94); z-index:100;
   display:flex; align-items:center; justify-content:center; padding:2rem;
   opacity:0; pointer-events:none; transition:opacity .3s ease;
 }
-.lightbox.open{ opacity:1; pointer-events:auto; }
-.lb-figure{ max-width:min(90vw, 720px); text-align:center; margin:0;}
-.lb-figure img{ max-width:100%; max-height:78vh; object-fit:contain; border-radius:2px; }
-.lb-figure figcaption{ font-family:var(--script); font-size:1.4rem; color:var(--yasemin); margin-top:.9rem; }
+.lightbox.open{opacity:1; pointer-events:auto;}
+.lb-figure{max-width:min(90vw, 720px); text-align:center; margin:0;}
+.lb-figure img{max-width:100%; max-height:78vh; object-fit:contain; border-radius:2px;}
+.lb-figure figcaption{font-family:var(--script); font-size:1.4rem; color:var(--yasemin); margin-top:.9rem;}
 .lb-close, .lb-prev, .lb-next{
   position:absolute; background:transparent; border:1.5px solid var(--altin); border-radius:50%;
-  width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer;
-  color:var(--yasemin);
+  width:44px; height:44px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; color:var(--yasemin); transition:background .3s;
 }
-.lb-close svg, .lb-prev svg, .lb-next svg{ width:18px; height:18px; }
-.lb-close{ top:1.25rem; right:1.25rem; }
-.lb-prev{ left:1.25rem; top:50%; transform:translateY(-50%); }
-.lb-next{ right:1.25rem; top:50%; transform:translateY(-50%); }
-@media(max-width:600px){ .lb-prev, .lb-next{ width:38px; height:38px; } }
+.lb-close:hover, .lb-prev:hover, .lb-next:hover{background:rgba(201,162,39,.2);}
+.lb-close svg, .lb-prev svg, .lb-next svg{width:18px; height:18px;}
+.lb-close{top:1.25rem; right:1.25rem;}
+.lb-prev{left:1.25rem; top:50%; transform:translateY(-50%);}
+.lb-next{right:1.25rem; top:50%; transform:translateY(-50%);}
+@media(max-width:600px){.lb-prev, .lb-next{width:38px; height:38px;}}
 
-/* ---------- Location ---------- */
-.location{ background:var(--gece2); color:var(--text-on-gece); text-align:center;}
+/* Location */
+.location{background:var(--gece2); color:var(--text-on-gece); text-align:center;}
 .location .section-head{color:var(--yasemin);}
-.loc-grid{ display:grid; gap:2rem; max-width:960px; margin:0 auto; opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
-.loc-grid.in-view{ opacity:1; transform:translateY(0); }
-@media(min-width:800px){ .loc-grid{ grid-template-columns:1fr 1fr; align-items:center; } }
-.loc-addr{ font-family:var(--serif); font-size:1.2rem; max-width:36ch; margin:0 auto 1rem; color:var(--text-on-gece);}
-.loc-note{ font-size:.85rem; color:var(--deniz-light); max-width:38ch; margin:0 auto 1.75rem;}
-.loc-details{ list-style:none; margin:0 auto 1.75rem; padding:0; display:flex; flex-direction:column; gap:1rem; max-width:38ch; text-align:left;}
-.loc-details li{ display:flex; gap:.8rem; align-items:flex-start; font-size:.9rem; color:var(--text-on-gece);}
-.loc-details strong{ color:var(--yasemin); font-weight:600;}
-.loc-d-icon{ flex:none; width:34px; height:34px; border-radius:50%; border:1.5px solid var(--altin); display:flex; align-items:center; justify-content:center;}
-.loc-d-icon svg{ width:16px; height:16px;}
-.loc-actions{ display:flex; flex-wrap:wrap; gap:.8rem; justify-content:center;}
-.btn-ghost{ background:transparent; border:1.5px solid var(--altin); color:var(--yasemin);}
-.btn-ghost:hover{ background:rgba(201,162,39,.14);}
-.loc-map{ border-radius:4px; overflow:hidden; border:1.5px solid var(--altin); box-shadow:0 8px 24px rgba(0,0,0,.25); aspect-ratio:4/3;}
-.loc-map iframe{ width:100%; height:100%; border:0; display:block; filter:grayscale(.1) contrast(1.05);}
-@media(min-width:800px){
-  .loc-grid{ text-align:left; }
-  .loc-addr, .loc-note{ margin-left:0; margin-right:0; }
-  .loc-details{ margin-left:0; margin-right:0; }
-  .loc-actions{ justify-content:flex-start; }
-}
-
-/* ---------- Dress ---------- */
-.dress{ text-align:center;}
-.dress-intro{ max-width:48ch; margin:0 auto 2.5rem; font-size:1rem;}
-.dress-grid{ display:grid; gap:1.5rem; max-width:640px; margin:0 auto; opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
-.dress-grid.in-view{ opacity:1; transform:translateY(0);}
-@media(min-width:680px){ .dress-grid{ grid-template-columns:1fr 1fr; } }
-.dress-col{ background:var(--yasemin2); border-radius:4px; padding:1.6rem 1.4rem;}
-.dress-col h3{ font-family:var(--serif); font-weight:500; font-size:1.1rem; margin:0 0 1rem; display:flex; align-items:center; gap:.6rem; justify-content:center;}
-.dc-icon{ width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none;}
-.dc-icon.dc-yes{ background:rgba(63,143,146,.18);}
-.dc-icon.dc-yes svg{ stroke:var(--deniz);}
-.dc-icon.dc-no{ background:rgba(224,113,63,.18);}
-.dc-icon.dc-no svg{ stroke:var(--gunbatimi-deep);}
-.dc-icon svg{ width:13px; height:13px;}
-.dress-col .swatches{ justify-content:center; flex-wrap:wrap;}
-.dress-col p{ font-size:.92rem; margin:0;}
-.swatches{ display:flex; gap:.9rem; justify-content:center;}
-.swatch{ width:26px; height:26px; border-radius:50%; display:block;}
-.swatch-item{ display:flex; flex-direction:column; align-items:center; gap:.4rem;}
-.swatch-item label{ font-size:.7rem; color:#6b6b5c;}
-
-/* ---------- RSVP ---------- */
-.rsvp{ background:var(--yasemin2);}
-.rsvp-card{
-  max-width:480px; margin:0 auto; background:var(--yasemin); border-radius:6px;
-  padding:2.4rem 2rem; box-shadow:0 10px 32px rgba(20,49,58,.08); border:1px solid rgba(201,162,39,.25);
+.loc-grid{
+  display:grid; gap:2rem; max-width:960px; margin:0 auto;
   opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;
 }
-.rsvp-card.in-view{ opacity:1; transform:translateY(0);}
-form{ display:flex; flex-direction:column; gap:1.3rem;}
-.field label{ display:block; font-size:.85rem; margin-bottom:.4rem; color:var(--text);}
-.field input[type=text], .field input[type=number], .field textarea{
-  width:100%; border:none; border-bottom:1px solid var(--altin); background:transparent;
-  padding:.5rem .1rem; font-size:1rem; color:var(--text); transition:border-color .25s ease;
+.loc-grid.in-view{opacity:1; transform:translateY(0);}
+@media(min-width:800px){.loc-grid{grid-template-columns:1fr 1fr; align-items:center;}}
+.loc-addr{font-family:var(--serif); font-size:1.2rem; max-width:36ch; margin:0 auto 1rem; color:var(--text-on-gece);}
+.loc-note{font-size:.85rem; color:var(--deniz-light); max-width:38ch; margin:0 auto 1.75rem;}
+.loc-details{list-style:none; margin:0 auto 1.75rem; padding:0; display:flex; flex-direction:column; gap:1rem; max-width:38ch; text-align:left;}
+.loc-details li{
+  display:flex; gap:.8rem; align-items:flex-start; font-size:.9rem;
+  color:var(--text-on-gece); padding:.8rem; border-radius:4px;
+  transition:background .3s, transform .3s;
 }
-.field input[type=text]:focus, .field input[type=number]:focus, .field textarea:focus{ border-bottom-color:var(--gunbatimi); }
-.field textarea{ resize:vertical; min-height:70px;}
-.radio-row{ display:flex; flex-direction:column; gap:.55rem;}
-.radio-row label{ display:flex; align-items:center; gap:.55rem; font-size:.95rem; cursor:pointer;}
-.rsvp-note{ font-size:.78rem; color:#6b6b5c; text-align:center;}
-.rsvp-status{ display:flex; align-items:center; justify-content:center; gap:.5rem; text-align:center; font-family:var(--serif); font-size:1.05rem; color:var(--gunbatimi); min-height:1.4em; margin:0;}
-.rs-icon{ display:none; width:20px; height:20px; border-radius:50%; flex:none; }
-.rs-icon.show{ display:flex; align-items:center; justify-content:center; animation:pop .4s cubic-bezier(.3,1.5,.4,1);}
-.rs-icon.ok{ background:rgba(63,143,146,.2);}
-.rs-icon.ok svg{ stroke:var(--deniz);}
-.rs-icon.err{ background:rgba(224,113,63,.2);}
-.rs-icon.err svg{ stroke:var(--gunbatimi-deep);}
-.rs-icon svg{ width:11px; height:11px;}
-@keyframes pop{ 0%{transform:scale(0);} 60%{transform:scale(1.25);} 100%{transform:scale(1);} }
+.loc-details li:hover{background:rgba(201,162,39,.08); transform:translateX(4px);}
+.loc-details strong{color:var(--yasemin); font-weight:600;}
+.loc-d-icon{
+  flex:none; width:34px; height:34px; border-radius:50%; border:1.5px solid var(--altin);
+  display:flex; align-items:center; justify-content:center; transition:transform .5s;
+}
+.loc-details li:hover .loc-d-icon{transform:rotate(360deg);}
+.loc-d-icon svg{width:16px; height:16px;}
+.loc-actions{display:flex; flex-wrap:wrap; gap:.8rem; justify-content:center;}
+.btn-ghost{background:transparent; border:1.5px solid var(--altin); color:var(--yasemin);}
+.btn-ghost:hover{background:rgba(201,162,39,.14);}
+.loc-map{
+  border-radius:4px; overflow:hidden; border:1.5px solid var(--altin);
+  box-shadow:0 8px 24px rgba(0,0,0,.25); aspect-ratio:4/3;
+  transition:transform .5s, box-shadow .5s;
+}
+.loc-map:hover{transform:scale(1.02); box-shadow:0 16px 40px rgba(201,162,39,.25);}
+.loc-map iframe{width:100%; height:100%; border:0; display:block; filter:grayscale(.1) contrast(1.05);}
+@media(min-width:800px){
+  .loc-grid{text-align:left;}
+  .loc-addr, .loc-note{margin-left:0; margin-right:0;}
+  .loc-details{margin-left:0; margin-right:0;}
+  .loc-actions{justify-content:flex-start;}
+}
 
+/* Dress */
+.dress{text-align:center;}
+.dress-intro{max-width:48ch; margin:0 auto 2.5rem; font-size:1rem;}
+.dress-grid{
+  display:grid; gap:1.5rem; max-width:640px; margin:0 auto;
+  opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;
+}
+.dress-grid.in-view{opacity:1; transform:translateY(0);}
+@media(min-width:680px){.dress-grid{grid-template-columns:1fr 1fr;}}
+.dress-col{
+  background:var(--yasemin2); border-radius:4px; padding:1.6rem 1.4rem;
+  transition:transform .5s ease, box-shadow .5s ease;
+}
+.dress-col:hover{transform:translateY(-6px); box-shadow:0 12px 30px rgba(20,49,58,.1);}
+.dress-col h3{
+  font-family:var(--serif); font-weight:500; font-size:1.1rem; margin:0 0 1rem;
+  display:flex; align-items:center; gap:.6rem; justify-content:center;
+}
+.dc-icon{width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none;}
+.dc-icon.dc-yes{background:rgba(63,143,146,.18);}
+.dc-icon.dc-yes svg{stroke:var(--deniz);}
+.dc-icon.dc-no{background:rgba(224,113,63,.18);}
+.dc-icon.dc-no svg{stroke:var(--gunbatimi-deep);}
+.dc-icon svg{width:13px; height:13px;}
+.dress-col .swatches{justify-content:center; flex-wrap:wrap;}
+.dress-col p{font-size:.92rem; margin:0;}
+.swatches{display:flex; gap:.9rem; justify-content:center;}
+.swatch{
+  width:26px; height:26px; border-radius:50%; display:block;
+  transition:transform .4s cubic-bezier(.3,1.5,.4,1);
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+}
+.swatch-item:hover .swatch{transform:scale(1.3) rotate(15deg);}
+.swatch-item{display:flex; flex-direction:column; align-items:center; gap:.4rem;}
+.swatch-item label{font-size:.7rem; color:#6b6b5c;}
+
+/* Gift */
+.gift{background:var(--yasemin); text-align:center; position:relative; overflow:hidden;}
+.gift::before{
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at 50% 0%, rgba(201,162,39,.08) 0, transparent 50%);
+  pointer-events:none;
+}
+.gift-intro{
+  max-width:52ch; margin:0 auto 2.5rem; font-size:.95rem;
+  color:var(--text); font-style:italic; font-family:var(--serif);
+}
+.gift-grid{
+  display:grid; gap:1.5rem; max-width:640px; margin:0 auto;
+  opacity:0; transform:translateY(18px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.gift-grid.in-view{opacity:1; transform:translateY(0);}
+@media(min-width:680px){.gift-grid{grid-template-columns:1fr 1fr;}}
+.gift-card{
+  background:linear-gradient(180deg, var(--yasemin) 0%, var(--yasemin2) 100%);
+  border:1px solid rgba(201,162,39,.35); border-radius:6px;
+  padding:2rem 1.6rem 1.8rem; text-align:center;
+  position:relative; overflow:hidden;
+  transition:transform .5s cubic-bezier(.3,1.1,.4,1), box-shadow .5s, border-color .4s;
+}
+.gift-card::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, transparent, var(--altin), var(--gunbatimi), var(--altin), transparent);
+  transform:scaleX(0); transform-origin:center;
+  transition:transform .7s ease;
+}
+.gift-card:hover::before{transform:scaleX(1);}
+.gift-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 20px 50px rgba(20,49,58,.15);
+  border-color:var(--altin);
+}
+.gift-icon{
+  width:52px; height:52px; margin:0 auto 1rem;
+  border-radius:50%; background:rgba(201,162,39,.12);
+  border:1.5px solid var(--altin);
+  display:flex; align-items:center; justify-content:center;
+  transition:transform .6s cubic-bezier(.3,1.5,.4,1), background .4s;
+}
+.gift-card:hover .gift-icon{transform:rotate(360deg) scale(1.05); background:rgba(201,162,39,.22);}
+.gift-icon svg{width:22px; height:22px; stroke:var(--gunbatimi);}
+.gift-card h3{
+  font-family:var(--serif); font-weight:500; font-size:1.15rem;
+  margin:0 0 .3rem; color:var(--text);
+}
+.gift-sub{
+  font-size:.72rem; letter-spacing:2px; text-transform:uppercase;
+  color:var(--gunbatimi); margin-bottom:1.1rem; font-weight:600;
+}
+.iban-box{
+  background:var(--yasemin); border:1px dashed rgba(201,162,39,.6);
+  border-radius:4px; padding:.85rem .7rem; margin-bottom:1rem;
+  font-family:'Courier New', monospace; font-size:.82rem;
+  color:var(--text); letter-spacing:.5px; word-break:break-all;
+  position:relative; transition:background .3s;
+}
+.gift-card:hover .iban-box{background:#fff;}
+.iban-name{
+  font-size:.7rem; letter-spacing:1.5px; text-transform:uppercase;
+  color:#8a8677; margin-bottom:.35rem; font-family:var(--sans);
+}
+.copy-btn{
+  display:inline-flex; align-items:center; gap:.4rem;
+  background:transparent; border:1.5px solid var(--gunbatimi);
+  color:var(--gunbatimi); padding:.6rem 1.3rem; border-radius:2px;
+  font-size:.78rem; letter-spacing:1.5px; text-transform:uppercase;
+  font-weight:600; cursor:pointer;
+  transition:background .3s, color .3s, transform .2s;
+}
+.copy-btn:hover{background:var(--gunbatimi); color:var(--yasemin);}
+.copy-btn:active{transform:scale(.96);}
+.copy-btn.copied{background:#3f8f92; border-color:#3f8f92; color:var(--yasemin);}
+.copy-btn svg{width:13px; height:13px;}
+
+/* ============ RSVP — PREMIUM ============ */
+.rsvp{
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(201,162,39,.12) 0, transparent 55%),
+    linear-gradient(180deg, var(--yasemin2) 0%, var(--yasemin) 100%);
+  position:relative; overflow:hidden;
+}
+.rsvp::before{
+  content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+  width:1px; height:70px;
+  background:linear-gradient(180deg, transparent, var(--altin), transparent);
+}
+.rsvp-sub{
+  text-align:center; max-width:46ch; margin:-1.5rem auto 3rem;
+  font-family:var(--serif); font-style:italic;
+  font-size:.98rem; color:#6b6b5c;
+}
+.rsvp-deadline{
+  display:inline-block; margin-top:.5rem;
+  padding:.25rem .9rem; border:1px solid rgba(201,162,39,.5);
+  border-radius:100px; font-family:var(--sans); font-style:normal;
+  font-size:.72rem; letter-spacing:2px; text-transform:uppercase;
+  color:var(--gunbatimi); font-weight:600;
+}
+.rsvp-invite{
+  max-width:520px; margin:0 auto; position:relative;
+  opacity:0; transform:translateY(30px);
+  transition:opacity .9s ease, transform .9s cubic-bezier(.22,.61,.36,1);
+}
+.rsvp-invite.in-view{opacity:1; transform:translateY(0);}
+.rsvp-invite::before{
+  content:''; position:absolute; inset:-10px;
+  border:1px solid rgba(201,162,39,.35); border-radius:4px;
+  pointer-events:none;
+  transition:inset .8s ease, border-color .6s ease;
+}
+.rsvp-invite.in-view::before{inset:-14px; border-color:rgba(201,162,39,.5);}
+.rsvp-card{
+  background:var(--yasemin); border-radius:3px;
+  padding:3rem 2.4rem 2.6rem;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.6) inset,
+    0 30px 70px -30px rgba(20,49,58,.3),
+    0 0 0 1px rgba(201,162,39,.2);
+  position:relative; overflow:hidden;
+}
+.rsvp-card::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--altin) 30%, var(--gunbatimi) 50%, var(--altin) 70%, transparent);
+  animation:rsvpShine 4s ease-in-out infinite;
+}
+@keyframes rsvpShine{0%,100%{opacity:.6;}50%{opacity:1;}}
+.rsvp-head{
+  text-align:center; margin-bottom:2rem;
+  padding-bottom:1.8rem;
+  border-bottom:1px dashed rgba(201,162,39,.4);
+  position:relative;
+}
+.rsvp-head::after{
+  content:'❦'; position:absolute; bottom:-11px; left:50%;
+  transform:translateX(-50%);
+  background:var(--yasemin); padding:0 .7rem;
+  color:var(--altin); font-size:.9rem;
+}
+.rsvp-head .names-mini{
+  font-family:var(--script); font-size:2.2rem;
+  color:var(--gunbatimi); line-height:1;
+  margin-bottom:.4rem;
+}
+.rsvp-head h3{
+  font-family:var(--serif); font-weight:500; font-size:1.15rem;
+  margin:0; color:var(--text); letter-spacing:.02em;
+}
+.rsvp-card form{display:flex; flex-direction:column; gap:1.5rem;}
+.rsvp-card .field{position:relative;}
+.rsvp-card .field label{
+  display:block; font-family:var(--sans);
+  font-size:.72rem; letter-spacing:2px; text-transform:uppercase;
+  color:#8a8677; margin-bottom:.5rem; font-weight:600;
+  transition:color .3s;
+}
+.rsvp-card .field:focus-within label{color:var(--gunbatimi);}
+.rsvp-card .field input[type=text],
+.rsvp-card .field textarea{
+  width:100%; border:none;
+  background:rgba(240,232,211,.4);
+  border-radius:2px;
+  padding:.85rem 1rem;
+  font-size:1rem; color:var(--text);
+  transition:background .3s, box-shadow .3s;
+  font-family:var(--sans);
+}
+.rsvp-card .field input:focus,
+.rsvp-card .field textarea:focus{
+  outline:none;
+  background:var(--yasemin2);
+  box-shadow:0 0 0 2px rgba(201,162,39,.35);
+}
+.rsvp-card .field textarea{resize:vertical; min-height:80px;}
+.attend-options{display:grid; grid-template-columns:1fr 1fr; gap:.7rem;}
+.attend-options input[type=radio]{position:absolute; opacity:0; pointer-events:none;}
+.attend-opt{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:.5rem; padding:1rem .8rem;
+  border:1.5px solid rgba(201,162,39,.35);
+  border-radius:3px; cursor:pointer; text-align:center;
+  transition:all .35s cubic-bezier(.22,.61,.36,1);
+  background:var(--yasemin); position:relative; overflow:hidden;
+}
+.attend-opt::before{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(201,162,39,.1), transparent);
+  opacity:0; transition:opacity .35s;
+}
+.attend-opt:hover{border-color:var(--altin); transform:translateY(-2px); box-shadow:0 8px 20px -8px rgba(201,162,39,.4);}
+.attend-opt:hover::before{opacity:1;}
+.attend-opt .opt-icon{
+  width:32px; height:32px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  border:1.5px solid currentColor;
+  transition:all .35s; position:relative; z-index:1;
+}
+.attend-opt .opt-icon svg{width:15px; height:15px;}
+.attend-opt .opt-label{
+  font-family:var(--serif); font-size:.95rem; font-weight:500;
+  color:var(--text); position:relative; z-index:1;
+}
+.attend-opt .opt-sub{
+  font-size:.7rem; letter-spacing:1px; text-transform:uppercase;
+  color:#8a8677; position:relative; z-index:1;
+}
+.attend-opt.yes{color:var(--deniz);}
+.attend-opt.no{color:#a89885;}
+input[type=radio]:checked + .attend-opt.yes{
+  border-color:var(--deniz);
+  background:linear-gradient(180deg, rgba(63,143,146,.08), rgba(63,143,146,.02));
+  box-shadow:0 8px 24px -10px rgba(63,143,146,.5);
+}
+input[type=radio]:checked + .attend-opt.yes::after{
+  content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--deniz);
+}
+input[type=radio]:checked + .attend-opt.yes .opt-icon{
+  background:var(--deniz); border-color:var(--deniz); color:var(--yasemin);
+}
+input[type=radio]:checked + .attend-opt.no{
+  border-color:var(--gunbatimi);
+  background:linear-gradient(180deg, rgba(224,113,63,.08), rgba(224,113,63,.02));
+  box-shadow:0 8px 24px -10px rgba(224,113,63,.4);
+}
+input[type=radio]:checked + .attend-opt.no::after{
+  content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--gunbatimi);
+}
+input[type=radio]:checked + .attend-opt.no .opt-icon{
+  background:var(--gunbatimi); border-color:var(--gunbatimi); color:var(--yasemin);
+}
+.count-pills{display:flex; gap:.4rem; flex-wrap:wrap;}
+.count-pills input{position:absolute; opacity:0; pointer-events:none;}
+.count-pill{
+  flex:1; min-width:44px; padding:.7rem .4rem;
+  border:1.5px solid rgba(201,162,39,.35);
+  border-radius:100px; text-align:center; cursor:pointer;
+  font-family:var(--serif); font-weight:500; font-size:1rem;
+  color:var(--text);
+  transition:all .3s cubic-bezier(.22,.61,.36,1);
+  display:block;
+}
+.count-pill:hover{border-color:var(--altin); transform:translateY(-2px);}
+.count-pills input:checked + .count-pill{
+  background:var(--gece); color:var(--yasemin); border-color:var(--gece);
+  box-shadow:0 6px 16px -6px rgba(20,49,58,.5);
+}
+.rsvp-submit{
+  width:100%;
+  display:flex; align-items:center; justify-content:center; gap:.6rem;
+  font-family:var(--sans); font-size:.82rem; font-weight:700;
+  letter-spacing:3px; text-transform:uppercase;
+  background:linear-gradient(135deg, var(--gece) 0%, var(--gece2) 100%);
+  color:var(--yasemin);
+  border:none; border-radius:3px;
+  padding:1.15rem 1.9rem;
+  cursor:pointer; position:relative; overflow:hidden;
+  transition:transform .3s, box-shadow .3s, letter-spacing .3s;
+  margin-top:.5rem;
+}
+.rsvp-submit::before{
+  content:''; position:absolute; top:0; left:-100%; width:100%; height:100%;
+  background:linear-gradient(90deg, transparent, rgba(201,162,39,.4), transparent);
+  transition:left .7s ease;
+}
+.rsvp-submit:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 30px -10px rgba(20,49,58,.6);
+  letter-spacing:5px;
+}
+.rsvp-submit:hover::before{left:100%;}
+.rsvp-submit svg{width:15px; height:15px; transition:transform .4s;}
+.rsvp-submit:hover svg{transform:translateX(4px);}
+.rsvp-submit:disabled{opacity:.6; cursor:not-allowed; transform:none; letter-spacing:3px;}
+.rsvp-status{
+  display:flex; align-items:center; justify-content:center; gap:.55rem;
+  text-align:center; font-family:var(--serif); font-size:.98rem;
+  color:var(--gunbatimi); min-height:1.4em; margin:0;
+  padding:.6rem; border-radius:3px; transition:background .3s;
+}
+.rsvp-status.success{background:rgba(63,143,146,.08); color:var(--deniz);}
+.rsvp-status.error{background:rgba(224,113,63,.08); color:var(--gunbatimi-deep);}
+.rs-icon{display:none; width:22px; height:22px; border-radius:50%; flex:none;}
+.rs-icon.show{display:flex; align-items:center; justify-content:center; animation:pop .45s cubic-bezier(.3,1.5,.4,1);}
+.rs-icon.ok{background:rgba(63,143,146,.2);}
+.rs-icon.ok svg{stroke:var(--deniz);}
+.rs-icon.err{background:rgba(224,113,63,.2);}
+.rs-icon.err svg{stroke:var(--gunbatimi-deep);}
+.rs-icon svg{width:12px; height:12px;}
+@keyframes pop{0%{transform:scale(0) rotate(-45deg);}60%{transform:scale(1.2) rotate(10deg);}100%{transform:scale(1) rotate(0);}}
+.rsvp-footnote{
+  text-align:center; margin:.8rem 0 0;
+  font-size:.72rem; color:#8a8677; font-style:italic;
+}
+@media(max-width:480px){
+  .rsvp-card{padding:2.4rem 1.6rem 2.2rem;}
+  .attend-options{grid-template-columns:1fr;}
+  .rsvp-head .names-mini{font-size:1.8rem;}
+}
+
+/* Ortak buton */
 .btn{
   display:inline-block; font-family:var(--sans); font-size:.9rem; font-weight:600;
   background:var(--gunbatimi); color:var(--yasemin); padding:.85rem 1.9rem; border-radius:2px;
-  text-decoration:none; border:none; cursor:pointer; transition:background .25s ease;
+  text-decoration:none; border:none; cursor:pointer;
+  transition:background .25s ease, transform .25s ease, box-shadow .25s;
 }
-.btn:hover{ background:var(--gunbatimi-deep); }
+.btn:hover{background:var(--gunbatimi-deep); transform:translateY(-2px); box-shadow:0 6px 16px rgba(184,80,31,.3);}
 
-/* ---------- Müzik Kontrolü ---------- */
+/* Music */
 .music-ctrl{
   position:fixed; right:1.1rem; bottom:1.1rem; z-index:40;
   width:52px; height:52px; border-radius:50%;
   background:var(--gece); border:1.5px solid var(--altin);
   box-shadow:0 3px 14px rgba(0,0,0,.35);
   display:flex; align-items:center; justify-content:center;
-  cursor:pointer; -webkit-tap-highlight-color:transparent;
-  transition:transform .2s ease, background .25s ease;
+  cursor:pointer; transition:transform .2s ease, background .25s ease;
 }
-.music-ctrl:hover{ background:var(--gece2); }
-.music-ctrl:active{ transform:scale(.92); }
-.music-ctrl svg{ width:22px; height:22px; }
-.music-ctrl .note-icon{ fill:var(--yasemin); }
-.music-ctrl .bars{ display:flex; align-items:flex-end; gap:2.5px; height:18px; }
-.music-ctrl .bars span{
-  display:block; width:3px; background:var(--altin); border-radius:1px;
-  animation:eq 1s ease-in-out infinite;
-}
-.music-ctrl .bars span:nth-child(1){ height:6px; animation-delay:-.3s; }
-.music-ctrl .bars span:nth-child(2){ height:14px; animation-delay:-.1s; }
-.music-ctrl .bars span:nth-child(3){ height:9px; animation-delay:-.5s; }
-.music-ctrl.paused .bars span{ animation-play-state:paused; height:4px !important; }
-@keyframes eq{ 0%,100%{ transform:scaleY(.4);} 50%{ transform:scaleY(1);} }
+.music-ctrl:hover{background:var(--gece2);}
+.music-ctrl:active{transform:scale(.92);}
+.music-ctrl svg{width:22px; height:22px;}
+.music-ctrl .note-icon{fill:var(--yasemin);}
+.music-ctrl .bars{display:flex; align-items:flex-end; gap:2.5px; height:18px;}
+.music-ctrl .bars span{display:block; width:3px; background:var(--altin); border-radius:1px; animation:eq 1s ease-in-out infinite;}
+.music-ctrl .bars span:nth-child(1){height:6px; animation-delay:-.3s;}
+.music-ctrl .bars span:nth-child(2){height:14px; animation-delay:-.1s;}
+.music-ctrl .bars span:nth-child(3){height:9px; animation-delay:-.5s;}
+.music-ctrl.paused .bars span{animation-play-state:paused; height:4px !important;}
+@keyframes eq{0%,100%{transform:scaleY(.4);}50%{transform:scaleY(1);}}
 .music-hint{
   position:fixed; right:1.1rem; bottom:4.3rem; z-index:40;
   background:var(--gece); color:var(--text-on-gece); border:1px solid var(--altin);
   font-family:var(--sans); font-size:.78rem; padding:.5rem .8rem; border-radius:6px;
   opacity:0; pointer-events:none; transform:translateY(6px);
-  transition:opacity .3s ease, transform .3s ease;
-  white-space:nowrap;
+  transition:opacity .3s ease, transform .3s ease; white-space:nowrap;
 }
-.music-hint.show{ opacity:1; transform:translateY(0); }
+.music-hint.show{opacity:1; transform:translateY(0);}
 
-footer{ background:var(--gece); color:var(--text-on-gece); text-align:center; padding:4rem 1.5rem 3rem;}
-footer .sprig{ width:190px;}
-footer .stem-line{ animation:none; stroke-dashoffset:0;}
-footer .fnote{ font-family:var(--serif); font-style:italic; font-size:1.05rem; max-width:40ch; margin:1rem auto;}
-footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); margin-top:.5rem;}
+footer{background:var(--gece); color:var(--text-on-gece); text-align:center; padding:4rem 1.5rem 3rem;}
+footer .sprig{width:190px;}
+footer .stem-line{animation:none; stroke-dashoffset:0;}
+footer .fnote{font-family:var(--serif); font-style:italic; font-size:1.05rem; max-width:40ch; margin:1rem auto;}
+footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); margin-top:.5rem;}
 
 @media (prefers-reduced-motion: reduce){
-  *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important;}
-  .names,.tagline,.datebar,.countdown{ opacity:1 !important; transform:none !important;}
-  .stem-line{ stroke-dashoffset:0 !important;}
-  .jasmine-flower{ opacity:1 !important; transform:scale(1) !important;}
-  .tl-item, .prog-grid, .g-grid > *, .loc-grid, .dress-grid, .rsvp-card{ opacity:1 !important; transform:none !important;}
-  .tl-item::before{ transform:scaleY(1) !important; }
+  *{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important;}
+  .names,.tagline,.datebar,.countdown{opacity:1 !important; transform:none !important;}
+  .stem-line{stroke-dashoffset:0 !important;}
+  .jasmine-flower{opacity:1 !important; transform:scale(1) !important;}
+  .tl-item, .prog-grid, .g-grid > *, .loc-grid, .dress-grid, .gift-grid, .rsvp-invite{opacity:1 !important; transform:none !important;}
+  .tl-item::before{transform:scaleY(1) !important;}
+  .tl-item .tl-icon{transform:scale(1.15) rotate(8deg) !important;}
+  .tl-item .tl-card::before{transform:scaleY(1) !important;}
+  .tl-item .tl-card{transform:translateX(6px) !important;}
 }
 </style>
 </head>
 <body>
+
+<div class="scroll-progress" id="scroll-progress"></div>
+<div class="particles" id="particles"></div>
 
 <audio id="bg-music" src="esra.mp3" loop preload="metadata"></audio>
 <button class="music-ctrl paused" id="music-toggle" aria-label="Müziği başlat/durdur" type="button">
@@ -414,76 +766,13 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
 <header class="hero">
   <svg class="sprig" viewBox="0 0 420 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path class="stem-line" d="M8,45 C60,20 100,70 150,45 C200,20 240,70 290,45 C330,24 370,62 412,45"/>
-    <g class="jasmine-flower f1" transform="translate(35,32) scale(0.62)">
-      <g class="bloom">
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-        <circle cx="0" cy="0" r="2"/>
-      </g>
-    </g>
-    <g class="jasmine-flower f2" transform="translate(95,60) scale(0.78)">
-      <g class="bloom">
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-        <circle cx="0" cy="0" r="2"/>
-      </g>
-    </g>
-    <g class="jasmine-flower f3" transform="translate(150,28) scale(0.9)">
-      <g class="bloom">
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-        <circle cx="0" cy="0" r="2"/>
-      </g>
-    </g>
-    <g class="jasmine-flower f4" transform="translate(200,58) scale(1.05)">
-      <g class="bloom">
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-        <circle cx="0" cy="0" r="2"/>
-      </g>
-    </g>
-    <g class="jasmine-flower f5" transform="translate(250,26) scale(1.2)">
-      <g class="bloom">
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-        <circle cx="0" cy="0" r="2"/>
-      </g>
-    </g>
-    <g class="jasmine-flower f6" transform="translate(300,56) scale(1.35)">
-      <g class="bloom">
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-        <circle cx="0" cy="0" r="2"/>
-      </g>
-    </g>
-    <g class="jasmine-flower f7" transform="translate(365,30) scale(1.5)">
-      <g class="bloom">
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-        <circle cx="0" cy="0" r="2"/>
-      </g>
-    </g>
+    <g class="jasmine-flower f1" transform="translate(35,32) scale(0.62)"><g class="bloom"><ellipse cx="0" cy="-6" rx="3.6" ry="6"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/><circle cx="0" cy="0" r="2"/></g></g>
+    <g class="jasmine-flower f2" transform="translate(95,60) scale(0.78)"><g class="bloom"><ellipse cx="0" cy="-6" rx="3.6" ry="6"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/><circle cx="0" cy="0" r="2"/></g></g>
+    <g class="jasmine-flower f3" transform="translate(150,28) scale(0.9)"><g class="bloom"><ellipse cx="0" cy="-6" rx="3.6" ry="6"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/><circle cx="0" cy="0" r="2"/></g></g>
+    <g class="jasmine-flower f4" transform="translate(200,58) scale(1.05)"><g class="bloom"><ellipse cx="0" cy="-6" rx="3.6" ry="6"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/><circle cx="0" cy="0" r="2"/></g></g>
+    <g class="jasmine-flower f5" transform="translate(250,26) scale(1.2)"><g class="bloom"><ellipse cx="0" cy="-6" rx="3.6" ry="6"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/><circle cx="0" cy="0" r="2"/></g></g>
+    <g class="jasmine-flower f6" transform="translate(300,56) scale(1.35)"><g class="bloom"><ellipse cx="0" cy="-6" rx="3.6" ry="6"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/><circle cx="0" cy="0" r="2"/></g></g>
+    <g class="jasmine-flower f7" transform="translate(365,30) scale(1.5)"><g class="bloom"><ellipse cx="0" cy="-6" rx="3.6" ry="6"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/><circle cx="0" cy="0" r="2"/></g></g>
   </svg>
   <h1 class="names">Esra &amp; Batuhan</h1>
   <p class="tagline">Kordon'un tuzlu esintisinde başlayan hikâyemize "evet" diyoruz.</p>
@@ -519,55 +808,24 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
     <h2 class="section-head">Hikâyemiz</h2>
     <div class="timeline" id="timeline">
       <div class="tl-item">
-        <div class="tl-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 5c-2.5 4.65-9.5 9-9.5 9z"/></svg>
-        </div>
-        <div class="tl-card">
-          <div class="tl-year">2020</div>
-          <div class="tl-text">İzmir Kordon'da, gün batımını izlerken tanıştık.</div>
-        </div>
+        <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 5c-2.5 4.65-9.5 9-9.5 9z"/></svg></div>
+        <div class="tl-card"><div class="tl-year">2020</div><div class="tl-text">İzmir Kordon'da, gün batımını izlerken tanıştık.</div></div>
       </div>
       <div class="tl-item">
-        <div class="tl-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="1.4" fill="var(--gunbatimi)" stroke="none"/>
-            <path d="M12 12C10 8 10 5 12 3c2 2 2 5 0 9Z"/>
-            <path d="M12 12C16 10 19 10 21 12c-2 2-5 2-9 0Z"/>
-            <path d="M12 12C14 16 14 19 12 21c-2-2-2-5 0-9Z"/>
-            <path d="M12 12C8 14 5 14 3 12c2-2 5-2 9 0Z"/>
-          </svg>
-        </div>
-        <div class="tl-card">
-          <div class="tl-year">2021</div>
-          <div class="tl-text">İlk kaçamağımızı Alaçatı'da yaptık; değirmenlerin arasında saatlerce yürüdük.</div>
-        </div>
+        <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.4" fill="var(--gunbatimi)" stroke="none"/><path d="M12 12C10 8 10 5 12 3c2 2 2 5 0 9Z"/><path d="M12 12C16 10 19 10 21 12c-2 2-5 2-9 0Z"/><path d="M12 12C14 16 14 19 12 21c-2-2-2-5 0-9Z"/><path d="M12 12C8 14 5 14 3 12c2-2 5-2 9 0Z"/></svg></div>
+        <div class="tl-card"><div class="tl-year">2021</div><div class="tl-text">İlk kaçamağımızı Alaçatı'da yaptık; değirmenlerin arasında saatlerce yürüdük.</div></div>
       </div>
       <div class="tl-item">
-        <div class="tl-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9a1 1 0 0 0 1 1h3v-6h4v6h3a1 1 0 0 0 1-1v-9"/></svg>
-        </div>
-        <div class="tl-card">
-          <div class="tl-year">2022</div>
-          <div class="tl-text">Karşıyaka'da küçük bir eve birlikte taşındık.</div>
-        </div>
+        <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9a1 1 0 0 0 1 1h3v-6h4v6h3a1 1 0 0 0 1-1v-9"/></svg></div>
+        <div class="tl-card"><div class="tl-year">2022</div><div class="tl-text">Karşıyaka'da küçük bir eve birlikte taşındık.</div></div>
       </div>
       <div class="tl-item">
-        <div class="tl-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="15" r="5"/><path d="M9.3 10 12 5l2.7 5"/></svg>
-        </div>
-        <div class="tl-card">
-          <div class="tl-year">2032</div>
-          <div class="tl-text">Eylül ayında, Tarihi Asansör'de şehrin ışıkları yanarken Batuhan diz çöktü.</div>
-        </div>
+        <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="15" r="5"/><path d="M9.3 10 12 5l2.7 5"/></svg></div>
+        <div class="tl-card"><div class="tl-year">2032</div><div class="tl-text">Eylül ayında, Tarihi Asansör'de şehrin ışıkları yanarken Batuhan diz çöktü.</div></div>
       </div>
       <div class="tl-item">
-        <div class="tl-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="13" r="5.5"/><circle cx="15" cy="13" r="5.5"/></svg>
-        </div>
-        <div class="tl-card">
-          <div class="tl-year">2034</div>
-          <div class="tl-text">22 Mayıs'ta, yasemin kokulu bir akşamda evleniyoruz.</div>
-        </div>
+        <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="13" r="5.5"/><circle cx="15" cy="13" r="5.5"/></svg></div>
+        <div class="tl-card"><div class="tl-year">2034</div><div class="tl-text">22 Mayıs'ta, yasemin kokulu bir akşamda evleniyoruz.</div></div>
       </div>
     </div>
   </div>
@@ -581,9 +839,7 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
     <h2 class="section-head">Program</h2>
     <div class="prog-grid">
       <div class="prog-block">
-        <div class="prog-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--altin)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="6"/><path d="M9 9 12 4l3 5"/></svg>
-        </div>
+        <div class="prog-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--altin)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="6"/><path d="M9 9 12 4l3 5"/></svg></div>
         <h3>Nikâh Töreni</h3>
         <div class="prog-time">19:00</div>
         <div class="prog-loc">Zeytin Bahçesi — Deniz Terası<br>Kuşçular, Urla / İzmir</div>
@@ -592,14 +848,7 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
       <div class="prog-div"></div>
       <span class="prog-amp" aria-hidden="true">&amp;</span>
       <div class="prog-block">
-        <div class="prog-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--altin)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 3h4l-.6 7a1.4 1.4 0 0 1-1.4 1.3h0A1.4 1.4 0 0 1 6.6 10L6 3Z"/>
-            <path d="M8 11.3V20"/><path d="M5.5 20h5"/>
-            <path d="M14 3h4l-.6 7a1.4 1.4 0 0 1-1.4 1.3h0A1.4 1.4 0 0 1 14.6 10L14 3Z"/>
-            <path d="M16 11.3V20"/><path d="M13.5 20h5"/>
-          </svg>
-        </div>
+        <div class="prog-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--altin)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h4l-.6 7a1.4 1.4 0 0 1-1.4 1.3h0A1.4 1.4 0 0 1 6.6 10L6 3Z"/><path d="M8 11.3V20"/><path d="M5.5 20h5"/><path d="M14 3h4l-.6 7a1.4 1.4 0 0 1-1.4 1.3h0A1.4 1.4 0 0 1 14.6 10L14 3Z"/><path d="M16 11.3V20"/><path d="M13.5 20h5"/></svg></div>
         <h3>Davet &amp; Resepsiyon</h3>
         <div class="prog-time">20:30</div>
         <div class="prog-loc">Zeytin Bahçesi — Ana Salon<br>Kuşçular, Urla / İzmir</div>
@@ -616,12 +865,12 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
     </svg>
     <h2 class="section-head">Anılarımızdan</h2>
     <div class="g-grid">
-      <div class="g-frame"><div class="g-photo ar-tall"><img src="g1.jpg" alt="Kordon'da ilk buluşma" loading="lazy"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Kordon'da ilk buluşma</div></div>
-      <div class="g-frame"><div class="g-photo ar-square"><img src="g2.jpg" alt="Alaçatı, 2021" loading="lazy"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Alaçatı, 2021</div></div>
-      <div class="g-frame"><div class="g-photo ar-portrait"><img src="g3.jpg" alt="Karşıyaka'daki evimiz" loading="lazy"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Karşıyaka'daki evimiz</div></div>
-      <div class="g-frame"><div class="g-photo ar-wide"><img src="g4.jpg" alt="Asansör'de teklif" loading="lazy"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Asansör'de teklif</div></div>
-      <div class="g-frame"><div class="g-photo ar-tall"><img src="g5.jpg" alt="Urla bağları" loading="lazy"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Urla bağları</div></div>
-      <div class="g-frame"><div class="g-photo ar-square"><img src="g6.jpg" alt="Kemeraltı'nda bir öğleden sonra" loading="lazy"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Kemeraltı'nda bir öğleden sonra</div></div>
+      <div class="g-frame"><div class="g-photo ar-tall"><img src="g1.jpg" alt="Kordon'da ilk buluşma" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Kordon'da ilk buluşma</div></div>
+      <div class="g-frame"><div class="g-photo ar-square"><img src="g2.jpg" alt="Alaçatı, 2021" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Alaçatı, 2021</div></div>
+      <div class="g-frame"><div class="g-photo ar-portrait"><img src="g3.jpg" alt="Karşıyaka'daki evimiz" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Karşıyaka'daki evimiz</div></div>
+      <div class="g-frame"><div class="g-photo ar-wide"><img src="g4.jpg" alt="Asansör'de teklif" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Asansör'de teklif</div></div>
+      <div class="g-frame"><div class="g-photo ar-tall"><img src="g5.jpg" alt="Urla bağları" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Urla bağları</div></div>
+      <div class="g-frame"><div class="g-photo ar-square"><img src="g6.jpg" alt="Kemeraltı'nda bir öğleden sonra" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Kemeraltı'nda bir öğleden sonra</div></div>
     </div>
   </div>
 </section>
@@ -647,12 +896,12 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
           </li>
         </ul>
         <div class="loc-actions">
-          <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Kuşçular+Urla+İzmir+zeytin+bahçesi" target="_blank" rel="noopener">Yol Tarifi Al</a>
+          <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Kuşçular+Urla+İzmir" target="_blank" rel="noopener">Yol Tarifi Al</a>
           <button class="btn btn-ghost" id="copy-gps" type="button">Koordinatları Kopyala</button>
         </div>
       </div>
       <div class="loc-map">
-        <iframe src="https://www.google.com/maps?q=Kuşçular+Mahallesi+Urla+İzmir+zeytin+bahçesi&output=embed" title="Düğün mekanı haritası" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        <iframe src="https://www.google.com/maps?q=Kuşçular+Mahallesi+Urla+İzmir&output=embed" title="Düğün mekanı haritası" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
       </div>
     </div>
   </div>
@@ -683,37 +932,129 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
   </div>
 </section>
 
+<!-- HEDİYE / BANKA HAVALESİ -->
+<section class="gift">
+  <div class="wrap">
+    <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 11h18"/><path d="M12 7V4"/><path d="M7.5 4.5 12 7l4.5-2.5"/>
+    </svg>
+    <h2 class="section-head">Hediye &amp; Banka Havalesi</h2>
+    <p class="gift-intro">Varlığınız en büyük armağanımız — ancak katkıda bulunmak isterseniz, aşağıdaki hesapları kullanabilirsiniz.</p>
+
+    <div class="gift-grid">
+      <div class="gift-card">
+        <div class="gift-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 11h18"/></svg>
+        </div>
+        <h3>Banka Havalesi / EFT</h3>
+        <div class="gift-sub">TRY · Vadesiz Hesap</div>
+        <div class="iban-box">
+          <div class="iban-name">Esra Yılmaz</div>
+          <span id="iban-1">TR33 0006 1005 1978 6457 8413 26</span>
+        </div>
+        <button class="copy-btn" type="button" data-copy="TR330006100519786457841326">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          <span class="copy-label">IBAN'ı Kopyala</span>
+        </button>
+      </div>
+
+      <div class="gift-card">
+        <div class="gift-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 11h18"/></svg>
+        </div>
+        <h3>Banka Havalesi / EFT</h3>
+        <div class="gift-sub">TRY · Vadesiz Hesap</div>
+        <div class="iban-box">
+          <div class="iban-name">Batuhan Demir</div>
+          <span id="iban-2">TR12 0004 6007 8888 0123 4567 89</span>
+        </div>
+        <button class="copy-btn" type="button" data-copy="TR120004600788880123456789">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          <span class="copy-label">IBAN'ı Kopyala</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RSVP — PREMIUM ============ -->
 <section class="rsvp">
   <div class="wrap">
     <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
       <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/>
     </svg>
     <h2 class="section-head">Bize Katılıyor musunuz?</h2>
-    <div class="rsvp-card">
-      <form id="rsvp-form">
-        <div class="field">
-          <label for="r-name">Ad Soyad</label>
-          <input type="text" id="r-name" name="name" required>
+    <p class="rsvp-sub">
+      Bu özel günümüzde sizi aramızda görmek isteriz.
+      <br><span class="rsvp-deadline">Son tarih · 1 Mayıs 2034</span>
+    </p>
+
+    <div class="rsvp-invite">
+      <div class="rsvp-card">
+        <div class="rsvp-head">
+          <div class="names-mini">Esra &amp; Batuhan</div>
+          <h3>Lütfen bize haber verin</h3>
         </div>
-        <div class="field">
-          <label>Katılım durumunuz</label>
-          <div class="radio-row">
-            <label><input type="radio" name="attending" value="evet" checked> Seve seve katılacağız</label>
-            <label><input type="radio" name="attending" value="hayir"> Ne yazık ki katılamayacağız</label>
+
+        <form id="rsvp-form" novalidate>
+          <div class="field">
+            <label for="r-name">Ad Soyad</label>
+            <input type="text" id="r-name" name="name" placeholder="Adınız ve soyadınız" required>
           </div>
-        </div>
-        <div class="field" id="count-field">
-          <label for="r-count">Kaç kişi geleceksiniz</label>
-          <input type="number" id="r-count" name="count" min="1" value="1">
-        </div>
-        <div class="field">
-          <label for="r-msg">Çiftimize küçük bir not (opsiyonel)</label>
-          <textarea id="r-msg" name="message"></textarea>
-        </div>
-        <button type="submit" class="btn" id="r-submit">Cevabımı Gönder</button>
-        <p class="rsvp-status" id="r-status"><span class="rs-icon" id="rs-icon" aria-hidden="true"></span><span id="rs-text"></span></p>
-        <p class="rsvp-note">Cevabınız Esra &amp; Batuhan'a doğrudan iletilecektir.</p>
-      </form>
+
+          <div class="field">
+            <label>Katılım durumunuz</label>
+            <div class="attend-options">
+              <input type="radio" id="attend-yes" name="attending" value="evet" checked>
+              <label class="attend-opt yes" for="attend-yes">
+                <span class="opt-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+                </span>
+                <span class="opt-label">Katılacağım</span>
+                <span class="opt-sub">Sizinle olacağız</span>
+              </label>
+
+              <input type="radio" id="attend-no" name="attending" value="hayir">
+              <label class="attend-opt no" for="attend-no">
+                <span class="opt-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </span>
+                <span class="opt-label">Katılamayacağım</span>
+                <span class="opt-sub">Gönlüm sizinle</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field" id="count-field">
+            <label>Kaç kişi olacaksınız?</label>
+            <div class="count-pills">
+              <input type="radio" id="count-1" name="count" value="1" checked>
+              <label class="count-pill" for="count-1">1</label>
+              <input type="radio" id="count-2" name="count" value="2">
+              <label class="count-pill" for="count-2">2</label>
+              <input type="radio" id="count-3" name="count" value="3">
+              <label class="count-pill" for="count-3">3</label>
+              <input type="radio" id="count-4" name="count" value="4">
+              <label class="count-pill" for="count-4">4</label>
+              <input type="radio" id="count-5" name="count" value="5">
+              <label class="count-pill" for="count-5">5+</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="r-msg">Çiftimize küçük bir not <span style="opacity:.6;text-transform:none;letter-spacing:0">(opsiyonel)</span></label>
+            <textarea id="r-msg" name="message" placeholder="Onlara söylemek istediğiniz bir şey..."></textarea>
+          </div>
+
+          <button type="submit" class="rsvp-submit" id="r-submit">
+            <span class="btn-text">Cevabımı Gönder</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+
+          <p class="rsvp-status" id="r-status"><span class="rs-icon" id="rs-icon" aria-hidden="true"></span><span id="rs-text"></span></p>
+          <p class="rsvp-footnote">Cevabınız yalnızca Esra &amp; Batuhan'a iletilir 🤍</p>
+        </form>
+      </div>
     </div>
   </div>
 </section>
@@ -723,30 +1064,9 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
 <footer>
   <svg class="sprig" viewBox="0 0 400 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path class="stem-line" d="M10,35 C80,13 140,57 200,35 C260,13 320,57 390,35"/>
-    <g class="jasmine-flower" transform="translate(95,20)">
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-      <circle cx="0" cy="0" r="2"/>
-    </g>
-    <g class="jasmine-flower" transform="translate(200,35)">
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-      <circle cx="0" cy="0" r="2"/>
-    </g>
-    <g class="jasmine-flower" transform="translate(305,20)">
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-      <circle cx="0" cy="0" r="2"/>
-    </g>
+    <g class="jasmine-flower" transform="translate(95,20)"><ellipse cx="0" cy="-6" rx="3.6" ry="6"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/><circle cx="0" cy="0" r="2"/></g>
+    <g class="jasmine-flower" transform="translate(200,35)"><ellipse cx="0" cy="-6" rx="3.6" ry="6"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/><circle cx="0" cy="0" r="2"/></g>
+    <g class="jasmine-flower" transform="translate(305,20)"><ellipse cx="0" cy="-6" rx="3.6" ry="6"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/><circle cx="0" cy="0" r="2"/></g>
   </svg>
   <p class="fnote">Hediye olarak yalnızca yanımızda olmanız yeter — dileyenler için gecede küçük bir hediye kutumuz olacak.</p>
   <p class="fnote">Sizi aramızda görmek için sabırsızlanıyoruz.</p>
@@ -765,14 +1085,36 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
 
 <script>
 (function(){
+  // Scroll progress
+  var sp = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', function(){
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    if(sp) sp.style.width = (window.scrollY / h * 100) + '%';
+  }, {passive:true});
 
-  // ---- Geri sayım ----
+  // Particles
+  var pcont = document.getElementById('particles');
+  if(pcont){
+    for(var i=0;i<20;i++){
+      var p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random()*100 + '%';
+      p.style.animationDuration = (14 + Math.random()*16) + 's';
+      p.style.animationDelay = (Math.random()*14) + 's';
+      var s = 3 + Math.random()*4;
+      p.style.width = s + 'px';
+      p.style.height = s + 'px';
+      pcont.appendChild(p);
+    }
+  }
+
+  // Geri sayım
   var target = new Date('2034-05-22T19:00:00+03:00').getTime();
   var elD=document.getElementById('cd-days'),
       elH=document.getElementById('cd-hours'),
       elM=document.getElementById('cd-mins'),
       elS=document.getElementById('cd-secs');
-  function pad(n){ return String(n).padStart(2,'0'); }
+  function pad(n){return String(n).padStart(2,'0');}
   function tick(){
     var now = Date.now();
     var diff = Math.max(0, target - now);
@@ -788,18 +1130,20 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
   tick();
   setInterval(tick, 1000);
 
-  // ---- RSVP ----
+  // ===== RSVP =====
   var form = document.getElementById('rsvp-form');
   var rsIcon = document.getElementById('rs-icon');
   var rsText = document.getElementById('rs-text');
+  var rsStatus = document.getElementById('r-status');
   var countField = document.getElementById('count-field');
   var attendRadios = document.querySelectorAll('input[name="attending"]');
   var submitBtn = document.getElementById('r-submit');
   var RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwOYnhM7QM1rKcGvqmSL-a5y5WqCxxu3_ADPIEBJ-ABtAud65bNoJNStMpcNURur8W5tQ/exec';
 
   function clearStatus(){
-    if(rsIcon){ rsIcon.className = 'rs-icon'; rsIcon.innerHTML = ''; }
-    if(rsText){ rsText.textContent = ''; }
+    if(rsIcon){rsIcon.className='rs-icon'; rsIcon.innerHTML='';}
+    if(rsText){rsText.textContent='';}
+    if(rsStatus){rsStatus.className='rsvp-status';}
   }
   function setStatus(type, text){
     if(rsIcon){
@@ -808,16 +1152,31 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
         ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>'
         : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
     }
-    if(rsText){ rsText.textContent = text; }
-  }
-
-  function updateCountVisibility(){
-    var attending = document.querySelector('input[name="attending"]:checked');
-    if(countField){
-      countField.style.display = (attending && attending.value === 'hayir') ? 'none' : 'block';
+    if(rsText){rsText.textContent = text;}
+    if(rsStatus){
+      rsStatus.className = 'rsvp-status ' + (type === 'ok' ? 'success' : 'error');
     }
   }
-  attendRadios.forEach(function(r){ r.addEventListener('change', updateCountVisibility); });
+  function updateCountVisibility(){
+    var attending = document.querySelector('input[name="attending"]:checked');
+    if(!countField) return;
+    if(attending && attending.value === 'hayir'){
+      countField.style.maxHeight = '0';
+      countField.style.opacity = '0';
+      countField.style.overflow = 'hidden';
+      countField.style.marginTop = '-1.5rem';
+      countField.style.pointerEvents = 'none';
+      countField.style.transition = 'all .4s ease';
+    } else {
+      countField.style.maxHeight = '220px';
+      countField.style.opacity = '1';
+      countField.style.overflow = 'visible';
+      countField.style.marginTop = '0';
+      countField.style.pointerEvents = 'auto';
+      countField.style.transition = 'all .4s ease';
+    }
+  }
+  attendRadios.forEach(function(r){r.addEventListener('change', updateCountVisibility);});
   updateCountVisibility();
 
   if(form){
@@ -826,29 +1185,39 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
       var nameInput = document.getElementById('r-name');
       var attending = document.querySelector('input[name="attending"]:checked');
       var isYes = attending && attending.value === 'evet';
-      var countInput = document.getElementById('r-count');
+      var countInput = document.querySelector('input[name="count"]:checked');
       var msgInput = document.getElementById('r-msg');
-      var count = isYes ? Math.max(1, parseInt(countInput.value, 10) || 1) : 0;
+      var count = isYes ? parseInt(countInput ? countInput.value : 1, 10) : 0;
+
+      if(!nameInput.value.trim()){
+        setStatus('err', 'Lütfen adınızı ve soyadınızı girin.');
+        nameInput.focus();
+        return;
+      }
 
       var payload = {
-        name: nameInput ? nameInput.value : '',
+        name: nameInput.value.trim(),
         attending: attending ? attending.value : '',
         count: count,
         message: msgInput ? msgInput.value : ''
       };
 
-      if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Gönderiliyor…'; }
+      if(submitBtn){
+        submitBtn.disabled = true;
+        var txt = submitBtn.querySelector('.btn-text');
+        if(txt) txt.textContent = 'Gönderiliyor…';
+      }
       clearStatus();
 
       fetch(RSVP_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        method:'POST',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
         body: JSON.stringify(payload)
       })
       .then(function(){
         setStatus('ok', isYes
-          ? 'Teşekkürler! Cevabınız kaydedildi, sizi ağırlamak için sabırsızlanıyoruz.'
-          : 'Anlıyoruz, bize haber verdiğiniz için teşekkürler.');
+          ? 'Teşekkürler! Cevabınız kaydedildi. Sizi ağırlamak için sabırsızlanıyoruz 🤍'
+          : 'Anlıyoruz, bize haber verdiğiniz için teşekkürler 🤍');
         form.reset();
         updateCountVisibility();
       })
@@ -856,88 +1225,67 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
         setStatus('err', 'Bir sorun oluştu, lütfen tekrar deneyin.');
       })
       .finally(function(){
-        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = 'Cevabımı Gönder'; }
+        if(submitBtn){
+          submitBtn.disabled = false;
+          var txt = submitBtn.querySelector('.btn-text');
+          if(txt) txt.textContent = 'Cevabımı Gönder';
+        }
       });
     });
   }
 
-  // ---- Müzik ----
+  // Müzik
   var audio = document.getElementById('bg-music');
   var toggleBtn = document.getElementById('music-toggle');
-  var hint = document.getElementById('music-hint');
   var eqBars = document.getElementById('eq-bars');
   var noteIcon = document.getElementById('note-icon');
-  var hintTimer = null;
-
   function setPlayingUI(isPlaying){
+    if(!toggleBtn) return;
     if(isPlaying){
       toggleBtn.classList.remove('paused');
-      eqBars.style.display = 'flex';
-      noteIcon.style.display = 'none';
+      if(eqBars) eqBars.style.display = 'flex';
+      if(noteIcon) noteIcon.style.display = 'none';
     } else {
       toggleBtn.classList.add('paused');
-      eqBars.style.display = 'none';
-      noteIcon.style.display = 'block';
+      if(eqBars) eqBars.style.display = 'none';
+      if(noteIcon) noteIcon.style.display = 'block';
     }
   }
-  function showHint(){
-    if(!hint) return;
-    hint.classList.add('show');
-    clearTimeout(hintTimer);
-    hintTimer = setTimeout(function(){ hint.classList.remove('show'); }, 3200);
-  }
-  function playAudio(){
-    var p = audio.play();
-    if(p !== undefined){
-      p.then(function(){
-        setPlayingUI(true);
-      }).catch(function(){
-        setPlayingUI(false);
-        showHint();
-        armFirstInteractionPlay();
-      });
-    }
-  }
-  function armFirstInteractionPlay(){
-    var events = ['touchstart','click','keydown','scroll'];
-    function handler(){
-      audio.play().then(function(){
-        setPlayingUI(true);
-        events.forEach(function(ev){ document.removeEventListener(ev, handler); });
-      }).catch(function(){});
-    }
-    events.forEach(function(ev){ document.addEventListener(ev, handler, {once:false, passive:true}); });
-  }
-
   if(audio && toggleBtn){
     toggleBtn.addEventListener('click', function(){
       if(audio.paused){
-        audio.play().then(function(){ setPlayingUI(true); }).catch(function(){});
+        audio.play().then(function(){setPlayingUI(true);}).catch(function(){});
       } else {
-        audio.pause();
-        setPlayingUI(false);
+        audio.pause(); setPlayingUI(false);
       }
     });
-    playAudio();
   }
 
-  // ---- Scroll ile belirme (reveal) ----
-  var revealTargets = document.querySelectorAll('.tl-item, .prog-grid, .g-grid, .loc-grid, .dress-grid, .rsvp-card');
+  // Reveal (scroll)
+  var revealTargets = document.querySelectorAll('.tl-item, .prog-grid, .g-grid, .loc-grid, .dress-grid, .gift-grid, .rsvp-invite');
   if('IntersectionObserver' in window){
     var revealObserver = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          entry.target.classList.add('in-view');
-          revealObserver.unobserve(entry.target);
+        if(entry.target.classList.contains('tl-item')){
+          if(entry.isIntersecting){
+            entry.target.classList.add('in-view');
+          } else {
+            entry.target.classList.remove('in-view');
+          }
+        } else {
+          if(entry.isIntersecting){
+            entry.target.classList.add('in-view');
+            revealObserver.unobserve(entry.target);
+          }
         }
       });
-    }, { threshold:0.18, rootMargin:'0px 0px -60px 0px' });
-    revealTargets.forEach(function(el){ revealObserver.observe(el); });
+    }, {threshold:0.55, rootMargin:'-10% 0px -25% 0px'});
+    revealTargets.forEach(function(el){revealObserver.observe(el);});
   } else {
-    revealTargets.forEach(function(el){ el.classList.add('in-view'); });
+    revealTargets.forEach(function(el){el.classList.add('in-view');});
   }
 
-  // ---- Galeri: büyütme (lightbox) ----
+  // Lightbox
   var galleryItems = Array.prototype.slice.call(document.querySelectorAll('.g-photo'));
   var lightbox = document.getElementById('lightbox');
   var lbImg = document.getElementById('lb-img');
@@ -946,7 +1294,6 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
   var lbPrevBtn = document.getElementById('lb-prev');
   var lbNextBtn = document.getElementById('lb-next');
   var lbIndex = 0;
-
   function openLightbox(i){
     if(!galleryItems.length) return;
     lbIndex = i;
@@ -968,13 +1315,13 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
     openLightbox(lbIndex);
   }
   galleryItems.forEach(function(item, i){
-    item.addEventListener('click', function(){ openLightbox(i); });
+    item.addEventListener('click', function(){openLightbox(i);});
   });
   if(lbCloseBtn) lbCloseBtn.addEventListener('click', closeLightbox);
-  if(lbPrevBtn) lbPrevBtn.addEventListener('click', function(){ showDelta(-1); });
-  if(lbNextBtn) lbNextBtn.addEventListener('click', function(){ showDelta(1); });
+  if(lbPrevBtn) lbPrevBtn.addEventListener('click', function(){showDelta(-1);});
+  if(lbNextBtn) lbNextBtn.addEventListener('click', function(){showDelta(1);});
   if(lightbox){
-    lightbox.addEventListener('click', function(e){ if(e.target === lightbox) closeLightbox(); });
+    lightbox.addEventListener('click', function(e){if(e.target === lightbox) closeLightbox();});
   }
   document.addEventListener('keydown', function(e){
     if(!lightbox || !lightbox.classList.contains('open')) return;
@@ -983,7 +1330,7 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
     if(e.key === 'ArrowRight') showDelta(1);
   });
 
-  // ---- Konum: koordinatları kopyala ----
+  // Koordinat kopyala
   var copyBtn = document.getElementById('copy-gps');
   if(copyBtn){
     copyBtn.addEventListener('click', function(){
@@ -991,13 +1338,44 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
       var original = copyBtn.textContent;
       function done(){
         copyBtn.textContent = 'Kopyalandı ✓';
-        setTimeout(function(){ copyBtn.textContent = original; }, 1800);
+        setTimeout(function(){copyBtn.textContent = original;}, 1800);
       }
       if(navigator.clipboard && navigator.clipboard.writeText){
         navigator.clipboard.writeText(coords).then(done).catch(function(){});
-      }
+      } else { done(); }
     });
   }
+
+  // IBAN kopyala
+  var ibanBtns = document.querySelectorAll('.copy-btn[data-copy]');
+  ibanBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var value = btn.getAttribute('data-copy');
+      var label = btn.querySelector('.copy-label');
+      var originalLabel = label ? label.textContent : "IBAN'ı Kopyala";
+      function done(){
+        btn.classList.add('copied');
+        if(label) label.textContent = 'Kopyalandı ✓';
+        setTimeout(function(){
+          btn.classList.remove('copied');
+          if(label) label.textContent = originalLabel;
+        }, 1900);
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(value).then(done).catch(function(){
+          var ta = document.createElement('textarea');
+          ta.value = value; document.body.appendChild(ta); ta.select();
+          try{ document.execCommand('copy'); done(); }catch(e){}
+          document.body.removeChild(ta);
+        });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = value; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); done(); }catch(e){}
+        document.body.removeChild(ta);
+      }
+    });
+  });
 
 })();
 </script>
