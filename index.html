@@ -26,7 +26,6 @@
   --sans:'Manrope', sans-serif;
   --max:680px;
 }
-
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
@@ -42,7 +41,6 @@ a{color:inherit;}
 button, input, textarea{font-family:inherit;}
 ::selection{background:var(--gunbatimi); color:var(--yasemin);}
 :focus-visible{outline:2px solid var(--gunbatimi); outline-offset:3px;}
-
 .wrap{max-width:var(--max); margin:0 auto; padding:0 1.5rem;}
 
 /* ---------- Hero ---------- */
@@ -61,7 +59,6 @@ button, input, textarea{font-family:inherit;}
   position:relative;
   overflow:visible;
 }
-
 .sprig{width:min(300px, 68vw); height:auto; margin:0 auto 1.25rem; overflow:visible;}
 .stem-line{
   fill:none; stroke:var(--altin); stroke-width:1.3; stroke-linecap:round;
@@ -78,8 +75,6 @@ button, input, textarea{font-family:inherit;}
 }
 .jasmine-flower ellipse{ fill:var(--yasemin); stroke:var(--altin); stroke-width:.4; }
 .jasmine-flower circle{ fill:var(--altin); }
-
-/* Soldan sağa, zikzak sırayla açılma gecikmeleri */
 .jasmine-flower.f1 .bloom{animation-delay:.5s;}
 .jasmine-flower.f2 .bloom{animation-delay:.8s;}
 .jasmine-flower.f3 .bloom{animation-delay:1.1s;}
@@ -87,17 +82,13 @@ button, input, textarea{font-family:inherit;}
 .jasmine-flower.f5 .bloom{animation-delay:1.7s;}
 .jasmine-flower.f6 .bloom{animation-delay:2.0s;}
 .jasmine-flower.f7 .bloom{animation-delay:2.3s;}
-
-/* Footer'da statik göster, animasyon yok */
 footer .jasmine-flower .bloom{ animation:none; opacity:1; transform:scale(1) !important; }
-
 @keyframes draw{to{stroke-dashoffset:0;}}
 @keyframes bloom{
   0%{ opacity:0; transform:scale(0) rotate(-15deg); }
   60%{ opacity:1; transform:scale(1.15) rotate(4deg); }
   100%{ opacity:1; transform:scale(1) rotate(0deg); }
 }
-
 .names{
   font-family:var(--script);
   font-size:clamp(3.8rem, 16vw, 8rem);
@@ -126,7 +117,6 @@ footer .jasmine-flower .bloom{ animation:none; opacity:1; transform:scale(1) !im
   animation:rise .9s ease-out 2.7s forwards;
 }
 @keyframes rise{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);}}
-
 .countdown{
   display:flex; gap:1.25rem; margin-top:2.25rem;
   opacity:0; animation:rise .9s ease-out 2.9s forwards;
@@ -134,7 +124,6 @@ footer .jasmine-flower .bloom{ animation:none; opacity:1; transform:scale(1) !im
 .countdown div{ display:flex; flex-direction:column; align-items:center; min-width:52px;}
 .countdown .num{ font-family:var(--serif); font-size:clamp(1.6rem,5vw,2.4rem); font-weight:500; color:var(--yasemin);}
 .countdown .lbl{ font-size:.72rem; color:var(--deniz-light); margin-top:.15rem;}
-
 .scrollcue{
   position:absolute; bottom:2.25rem; left:50%; transform:translateX(-50%);
   width:1px; height:30px; background:linear-gradient(var(--altin), transparent);
@@ -142,7 +131,6 @@ footer .jasmine-flower .bloom{ animation:none; opacity:1; transform:scale(1) !im
   z-index:1;
 }
 @keyframes cue{0%,100%{opacity:.25;} 50%{opacity:.9;}}
-
 .wave{ position:absolute; left:0; right:0; bottom:-1px; line-height:0;}
 .wave svg{ width:100%; height:64px; display:block;}
 .wave-fill{ fill:var(--yasemin); }
@@ -150,67 +138,207 @@ footer .jasmine-flower .bloom{ animation:none; opacity:1; transform:scale(1) !im
 
 /* ---------- Sections ---------- */
 section{padding:5.5rem 0;}
+.section-icon{ display:block; width:30px; height:30px; margin:0 auto 1rem; }
 .section-head{
   font-family:var(--serif); font-weight:500;
   font-size:clamp(1.7rem,4vw,2.3rem);
   text-align:center; margin:0 0 2.5rem;
 }
-
 .invite p{
   font-family:var(--serif); font-style:italic; font-size:clamp(1.1rem,2.6vw,1.35rem);
   text-align:center; max-width:52ch; margin:0 auto 1.5rem; color:var(--text);
 }
 .invite .sign{ font-family:var(--script); font-size:2.3rem; color:var(--gunbatimi); font-style:normal; margin-top:.5rem;}
-
 .story{ background:var(--yasemin2);}
-.timeline{ position:relative; max-width:520px; margin:0 auto; padding-left:2rem;}
-.timeline::before{
-  content:''; position:absolute; left:.3rem; top:.4rem; bottom:.4rem; width:1px; background:var(--altin);
+
+/* ---------- Timeline ---------- */
+.timeline{ position:relative; max-width:560px; margin:0 auto; }
+.tl-item{
+  position:relative; display:grid; grid-template-columns:44px 1fr; column-gap:1.1rem;
+  margin-bottom:2.2rem; opacity:0; transform:translateY(18px);
+  transition:opacity .7s ease, transform .7s ease;
 }
-.tl-item{ position:relative; margin-bottom:2.1rem;}
-.tl-item:last-child{margin-bottom:0;}
+.tl-item.in-view{ opacity:1; transform:translateY(0); }
+.tl-item:last-child{ margin-bottom:0; }
 .tl-item::before{
-  content:''; position:absolute; left:-2rem; top:.35rem; width:9px; height:9px; border-radius:50%;
-  background:var(--gunbatimi); transform:translateX(-4px);
+  content:''; position:absolute; left:21px; top:44px; bottom:-2.2rem; width:2px;
+  background:var(--altin); opacity:.35; transform:scaleY(0); transform-origin:top;
+  transition:transform .9s ease .25s;
 }
+.tl-item.in-view::before{ transform:scaleY(1); }
+.tl-item:last-child::before{ display:none; }
+.tl-icon{
+  width:44px; height:44px; border-radius:50%; background:var(--yasemin); border:1.5px solid var(--altin);
+  display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(20,49,58,.14);
+  position:relative; z-index:2;
+}
+.tl-icon svg{ width:20px; height:20px; }
+.tl-card{ background:var(--yasemin); border-radius:3px; padding:.9rem 1.15rem; box-shadow:0 1px 5px rgba(0,0,0,.06); align-self:start; }
 .tl-year{ font-family:var(--serif); font-weight:600; color:var(--gunbatimi); font-size:1.15rem; margin-bottom:.2rem;}
 .tl-text{ font-size:.98rem; color:var(--text);}
 
+/* ---------- Program ---------- */
 .program{ background:var(--gece); color:var(--text-on-gece);}
 .program .section-head{color:var(--yasemin);}
-.prog-grid{ display:grid; gap:2.5rem; max-width:600px; margin:0 auto;}
+.prog-grid{ display:grid; gap:2.5rem; max-width:600px; margin:0 auto; position:relative; opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+.prog-grid.in-view{ opacity:1; transform:translateY(0); }
 .prog-div{ display:none; }
+.prog-amp{ display:none; }
 @media(min-width:680px){
   .prog-grid{grid-template-columns:1fr 1px 1fr; align-items:stretch;}
   .prog-div{display:block; background:var(--altin); opacity:.4;}
+  .prog-amp{
+    display:flex; align-items:center; justify-content:center;
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:34px; height:34px; border-radius:50%;
+    font-family:var(--script); font-size:1.4rem; color:var(--altin);
+    background:var(--gece);
+  }
 }
 .prog-block{ text-align:center;}
+.prog-icon{
+  width:52px; height:52px; margin:0 auto .9rem; border-radius:50%;
+  background:rgba(201,162,39,.12); border:1.5px solid var(--altin);
+  display:flex; align-items:center; justify-content:center;
+}
+.prog-icon svg{ width:24px; height:24px; }
 .prog-block h3{ font-family:var(--serif); font-weight:500; font-size:1.4rem; margin:0 0 .4rem; color:var(--yasemin);}
 .prog-time{ font-family:var(--serif); font-size:2.1rem; color:var(--altin); margin:.2rem 0;}
 .prog-loc{ font-size:.95rem; color:var(--text-on-gece); margin:.3rem 0;}
 .prog-note{ font-size:.82rem; color:var(--deniz-light); margin-top:.5rem;}
 
+/* ---------- Gallery ---------- */
 .g-grid{ column-count:2; column-gap:1.1rem; max-width:600px; margin:0 auto;}
 @media(min-width:600px){ .g-grid{ column-count:3; } }
+.g-grid > *{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
+.g-grid.in-view > *{ opacity:1; transform:translateY(0); }
+.g-grid.in-view > *:nth-child(1){transition-delay:.05s;}
+.g-grid.in-view > *:nth-child(2){transition-delay:.15s;}
+.g-grid.in-view > *:nth-child(3){transition-delay:.25s;}
+.g-grid.in-view > *:nth-child(4){transition-delay:.35s;}
+.g-grid.in-view > *:nth-child(5){transition-delay:.45s;}
+.g-grid.in-view > *:nth-child(6){transition-delay:.55s;}
 .g-frame{
   break-inside:avoid; margin:0 0 1.1rem;
   border-radius:2px; padding:.5rem .5rem 1.1rem;
   background:var(--yasemin); box-shadow:0 1px 3px rgba(0,0,0,.15);
 }
-.g-photo{ border-radius:1px; display:flex; align-items:center; justify-content:center; text-align:center; padding:.6rem; overflow:hidden;}
-.g-photo span{ font-family:var(--sans); font-size:.72rem; color:rgba(255,255,255,.88); line-height:1.3;}
-.g-photo img{ width:100%; height:100%; object-fit:cover; display:block;}
+.g-photo{ position:relative; border-radius:1px; display:flex; align-items:center; justify-content:center; text-align:center; padding:.6rem; overflow:hidden; cursor:pointer;}
+.g-photo span.placeholder{ font-family:var(--sans); font-size:.72rem; color:rgba(255,255,255,.88); line-height:1.3;}
+.g-photo img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease;}
+.g-photo:hover img{ transform:scale(1.06); }
+.g-photo::after{ content:''; position:absolute; inset:0; background:rgba(20,49,58,0); transition:background .3s ease; }
+.g-photo:hover::after{ background:rgba(20,49,58,.15); }
+.g-expand{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(.7);
+  width:34px; height:34px; border-radius:50%; background:rgba(250,246,234,.92);
+  display:flex; align-items:center; justify-content:center; opacity:0;
+  transition:opacity .3s ease, transform .3s ease; pointer-events:none;
+}
+.g-photo:hover .g-expand{ opacity:1; transform:translate(-50%,-50%) scale(1); }
+.g-expand svg{ width:16px; height:16px; }
 .g-cap{ font-family:var(--script); font-size:1.2rem; text-align:center; margin-top:.4rem; color:var(--text);}
 .ar-tall{aspect-ratio:4/5;}
 .ar-square{aspect-ratio:1/1;}
 .ar-wide{aspect-ratio:5/4;}
 .ar-portrait{aspect-ratio:3/4;}
 
+/* ---------- Lightbox ---------- */
+.lightbox{
+  position:fixed; inset:0; background:rgba(20,26,29,.94); z-index:100;
+  display:flex; align-items:center; justify-content:center; padding:2rem;
+  opacity:0; pointer-events:none; transition:opacity .3s ease;
+}
+.lightbox.open{ opacity:1; pointer-events:auto; }
+.lb-figure{ max-width:min(90vw, 720px); text-align:center; margin:0;}
+.lb-figure img{ max-width:100%; max-height:78vh; object-fit:contain; border-radius:2px; }
+.lb-figure figcaption{ font-family:var(--script); font-size:1.4rem; color:var(--yasemin); margin-top:.9rem; }
+.lb-close, .lb-prev, .lb-next{
+  position:absolute; background:transparent; border:1.5px solid var(--altin); border-radius:50%;
+  width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer;
+  color:var(--yasemin);
+}
+.lb-close svg, .lb-prev svg, .lb-next svg{ width:18px; height:18px; }
+.lb-close{ top:1.25rem; right:1.25rem; }
+.lb-prev{ left:1.25rem; top:50%; transform:translateY(-50%); }
+.lb-next{ right:1.25rem; top:50%; transform:translateY(-50%); }
+@media(max-width:600px){ .lb-prev, .lb-next{ width:38px; height:38px; } }
 
+/* ---------- Location ---------- */
 .location{ background:var(--gece2); color:var(--text-on-gece); text-align:center;}
 .location .section-head{color:var(--yasemin);}
+.loc-grid{ display:grid; gap:2rem; max-width:960px; margin:0 auto; opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+.loc-grid.in-view{ opacity:1; transform:translateY(0); }
+@media(min-width:800px){ .loc-grid{ grid-template-columns:1fr 1fr; align-items:center; } }
 .loc-addr{ font-family:var(--serif); font-size:1.2rem; max-width:36ch; margin:0 auto 1rem; color:var(--text-on-gece);}
 .loc-note{ font-size:.85rem; color:var(--deniz-light); max-width:38ch; margin:0 auto 1.75rem;}
+.loc-details{ list-style:none; margin:0 auto 1.75rem; padding:0; display:flex; flex-direction:column; gap:1rem; max-width:38ch; text-align:left;}
+.loc-details li{ display:flex; gap:.8rem; align-items:flex-start; font-size:.9rem; color:var(--text-on-gece);}
+.loc-details strong{ color:var(--yasemin); font-weight:600;}
+.loc-d-icon{ flex:none; width:34px; height:34px; border-radius:50%; border:1.5px solid var(--altin); display:flex; align-items:center; justify-content:center;}
+.loc-d-icon svg{ width:16px; height:16px;}
+.loc-actions{ display:flex; flex-wrap:wrap; gap:.8rem; justify-content:center;}
+.btn-ghost{ background:transparent; border:1.5px solid var(--altin); color:var(--yasemin);}
+.btn-ghost:hover{ background:rgba(201,162,39,.14);}
+.loc-map{ border-radius:4px; overflow:hidden; border:1.5px solid var(--altin); box-shadow:0 8px 24px rgba(0,0,0,.25); aspect-ratio:4/3;}
+.loc-map iframe{ width:100%; height:100%; border:0; display:block; filter:grayscale(.1) contrast(1.05);}
+@media(min-width:800px){
+  .loc-grid{ text-align:left; }
+  .loc-addr, .loc-note{ margin-left:0; margin-right:0; }
+  .loc-details{ margin-left:0; margin-right:0; }
+  .loc-actions{ justify-content:flex-start; }
+}
+
+/* ---------- Dress ---------- */
+.dress{ text-align:center;}
+.dress-intro{ max-width:48ch; margin:0 auto 2.5rem; font-size:1rem;}
+.dress-grid{ display:grid; gap:1.5rem; max-width:640px; margin:0 auto; opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+.dress-grid.in-view{ opacity:1; transform:translateY(0);}
+@media(min-width:680px){ .dress-grid{ grid-template-columns:1fr 1fr; } }
+.dress-col{ background:var(--yasemin2); border-radius:4px; padding:1.6rem 1.4rem;}
+.dress-col h3{ font-family:var(--serif); font-weight:500; font-size:1.1rem; margin:0 0 1rem; display:flex; align-items:center; gap:.6rem; justify-content:center;}
+.dc-icon{ width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none;}
+.dc-icon.dc-yes{ background:rgba(63,143,146,.18);}
+.dc-icon.dc-yes svg{ stroke:var(--deniz);}
+.dc-icon.dc-no{ background:rgba(224,113,63,.18);}
+.dc-icon.dc-no svg{ stroke:var(--gunbatimi-deep);}
+.dc-icon svg{ width:13px; height:13px;}
+.dress-col .swatches{ justify-content:center; flex-wrap:wrap;}
+.dress-col p{ font-size:.92rem; margin:0;}
+.swatches{ display:flex; gap:.9rem; justify-content:center;}
+.swatch{ width:26px; height:26px; border-radius:50%; display:block;}
+.swatch-item{ display:flex; flex-direction:column; align-items:center; gap:.4rem;}
+.swatch-item label{ font-size:.7rem; color:#6b6b5c;}
+
+/* ---------- RSVP ---------- */
+.rsvp{ background:var(--yasemin2);}
+.rsvp-card{
+  max-width:480px; margin:0 auto; background:var(--yasemin); border-radius:6px;
+  padding:2.4rem 2rem; box-shadow:0 10px 32px rgba(20,49,58,.08); border:1px solid rgba(201,162,39,.25);
+  opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;
+}
+.rsvp-card.in-view{ opacity:1; transform:translateY(0);}
+form{ display:flex; flex-direction:column; gap:1.3rem;}
+.field label{ display:block; font-size:.85rem; margin-bottom:.4rem; color:var(--text);}
+.field input[type=text], .field input[type=number], .field textarea{
+  width:100%; border:none; border-bottom:1px solid var(--altin); background:transparent;
+  padding:.5rem .1rem; font-size:1rem; color:var(--text); transition:border-color .25s ease;
+}
+.field input[type=text]:focus, .field input[type=number]:focus, .field textarea:focus{ border-bottom-color:var(--gunbatimi); }
+.field textarea{ resize:vertical; min-height:70px;}
+.radio-row{ display:flex; flex-direction:column; gap:.55rem;}
+.radio-row label{ display:flex; align-items:center; gap:.55rem; font-size:.95rem; cursor:pointer;}
+.rsvp-note{ font-size:.78rem; color:#6b6b5c; text-align:center;}
+.rsvp-status{ display:flex; align-items:center; justify-content:center; gap:.5rem; text-align:center; font-family:var(--serif); font-size:1.05rem; color:var(--gunbatimi); min-height:1.4em; margin:0;}
+.rs-icon{ display:none; width:20px; height:20px; border-radius:50%; flex:none; }
+.rs-icon.show{ display:flex; align-items:center; justify-content:center; animation:pop .4s cubic-bezier(.3,1.5,.4,1);}
+.rs-icon.ok{ background:rgba(63,143,146,.2);}
+.rs-icon.ok svg{ stroke:var(--deniz);}
+.rs-icon.err{ background:rgba(224,113,63,.2);}
+.rs-icon.err svg{ stroke:var(--gunbatimi-deep);}
+.rs-icon svg{ width:11px; height:11px;}
+@keyframes pop{ 0%{transform:scale(0);} 60%{transform:scale(1.25);} 100%{transform:scale(1);} }
+
 .btn{
   display:inline-block; font-family:var(--sans); font-size:.9rem; font-weight:600;
   background:var(--gunbatimi); color:var(--yasemin); padding:.85rem 1.9rem; border-radius:2px;
@@ -242,7 +370,6 @@ section{padding:5.5rem 0;}
 .music-ctrl .bars span:nth-child(3){ height:9px; animation-delay:-.5s; }
 .music-ctrl.paused .bars span{ animation-play-state:paused; height:4px !important; }
 @keyframes eq{ 0%,100%{ transform:scaleY(.4);} 50%{ transform:scaleY(1);} }
-
 .music-hint{
   position:fixed; right:1.1rem; bottom:4.3rem; z-index:40;
   background:var(--gece); color:var(--text-on-gece); border:1px solid var(--altin);
@@ -252,24 +379,6 @@ section{padding:5.5rem 0;}
   white-space:nowrap;
 }
 .music-hint.show{ opacity:1; transform:translateY(0); }
-
-.dress{ text-align:center;}
-.dress p{ max-width:44ch; margin:0 auto 1.25rem; font-size:1rem;}
-.swatches{ display:flex; gap:.6rem; justify-content:center;}
-.swatch{ width:26px; height:26px; border-radius:50%; }
-
-.rsvp{ background:var(--yasemin2);}
-form{ max-width:440px; margin:0 auto; display:flex; flex-direction:column; gap:1.3rem;}
-.field label{ display:block; font-size:.85rem; margin-bottom:.4rem; color:var(--text);}
-.field input[type=text], .field input[type=number], .field textarea{
-  width:100%; border:none; border-bottom:1px solid var(--altin); background:transparent;
-  padding:.5rem .1rem; font-size:1rem; color:var(--text);
-}
-.field textarea{ resize:vertical; min-height:70px;}
-.radio-row{ display:flex; flex-direction:column; gap:.55rem;}
-.radio-row label{ display:flex; align-items:center; gap:.55rem; font-size:.95rem; cursor:pointer;}
-.rsvp-note{ font-size:.78rem; color:#6b6b5c; text-align:center;}
-.rsvp-status{ text-align:center; font-family:var(--serif); font-size:1.05rem; color:var(--gunbatimi); min-height:1.4em; margin:0;}
 
 footer{ background:var(--gece); color:var(--text-on-gece); text-align:center; padding:4rem 1.5rem 3rem;}
 footer .sprig{ width:190px;}
@@ -282,12 +391,14 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
   .names,.tagline,.datebar,.countdown{ opacity:1 !important; transform:none !important;}
   .stem-line{ stroke-dashoffset:0 !important;}
   .jasmine-flower{ opacity:1 !important; transform:scale(1) !important;}
+  .tl-item, .prog-grid, .g-grid > *, .loc-grid, .dress-grid, .rsvp-card{ opacity:1 !important; transform:none !important;}
+  .tl-item::before{ transform:scaleY(1) !important; }
 }
 </style>
 </head>
 <body>
 
-<audio id="bg-music" src="esra.mp3" loop preload="auto"></audio>
+<audio id="bg-music" src="esra.mp3" loop preload="metadata"></audio>
 <button class="music-ctrl paused" id="music-toggle" aria-label="Müziği başlat/durdur" type="button">
   <svg class="note-icon" viewBox="0 0 24 24" id="note-icon" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--yasemin)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <path d="M9 18V5l12-2v13"/>
@@ -303,82 +414,80 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
 <header class="hero">
   <svg class="sprig" viewBox="0 0 420 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path class="stem-line" d="M8,45 C60,20 100,70 150,45 C200,20 240,70 290,45 C330,24 370,62 412,45"/>
-    <!-- Soldan sağa, yukarı-aşağı zikzak sırayla, küçükten büyüğe -->
     <g class="jasmine-flower f1" transform="translate(35,32) scale(0.62)">
       <g class="bloom">
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-      <circle cx="0" cy="0" r="2"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
+        <circle cx="0" cy="0" r="2"/>
       </g>
     </g>
     <g class="jasmine-flower f2" transform="translate(95,60) scale(0.78)">
       <g class="bloom">
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-      <circle cx="0" cy="0" r="2"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
+        <circle cx="0" cy="0" r="2"/>
       </g>
     </g>
     <g class="jasmine-flower f3" transform="translate(150,28) scale(0.9)">
       <g class="bloom">
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-      <circle cx="0" cy="0" r="2"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
+        <circle cx="0" cy="0" r="2"/>
       </g>
     </g>
     <g class="jasmine-flower f4" transform="translate(200,58) scale(1.05)">
       <g class="bloom">
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-      <circle cx="0" cy="0" r="2"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
+        <circle cx="0" cy="0" r="2"/>
       </g>
     </g>
     <g class="jasmine-flower f5" transform="translate(250,26) scale(1.2)">
       <g class="bloom">
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-      <circle cx="0" cy="0" r="2"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
+        <circle cx="0" cy="0" r="2"/>
       </g>
     </g>
     <g class="jasmine-flower f6" transform="translate(300,56) scale(1.35)">
       <g class="bloom">
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-      <circle cx="0" cy="0" r="2"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
+        <circle cx="0" cy="0" r="2"/>
       </g>
     </g>
     <g class="jasmine-flower f7" transform="translate(365,30) scale(1.5)">
       <g class="bloom">
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
-      <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
-      <circle cx="0" cy="0" r="2"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(0)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/>
+        <circle cx="0" cy="0" r="2"/>
       </g>
     </g>
   </svg>
   <h1 class="names">Esra &amp; Batuhan</h1>
   <p class="tagline">Kordon'un tuzlu esintisinde başlayan hikâyemize "evet" diyoruz.</p>
   <p class="datebar">22 Mayıs 2034 · Pazartesi · İzmir</p>
-
   <div class="countdown">
     <div><span class="num" id="cd-days">00</span><span class="lbl">gün</span></div>
     <div><span class="num" id="cd-hours">00</span><span class="lbl">saat</span></div>
@@ -386,7 +495,6 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
     <div><span class="num" id="cd-secs">00</span><span class="lbl">saniye</span></div>
   </div>
   <div class="scrollcue" aria-hidden="true"></div>
-
   <div class="wave" aria-hidden="true">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <path class="wave-fill" d="M0,40 C240,90 480,0 720,45 C960,90 1200,0 1440,45 L1440,120 L0,120 Z"/>
@@ -395,112 +503,221 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
 </header>
 
 <main>
- <section class="invite">
+
+<section class="invite">
   <div class="wrap">
     <p>Kordon'un tuzlu esintisinde başlayan bu hikâye, şimdi sizin de şahitliğinizle yeni bir sayfaya açılıyor. Yasemin kokulu bir Mayıs akşamında, en yakınlarımızla bir arada olmak bizim için en büyük mutluluk olacak.</p>
     <p class="sign">Sevgiyle, Esra &amp; Batuhan</p>
   </div>
- </section>
+</section>
 
- <section class="story">
+<section class="story">
   <div class="wrap">
-   <h2 class="section-head">Hikâyemiz</h2>
-   <div class="timeline">
-     <div class="tl-item"><div class="tl-year">2020</div><div class="tl-text">İzmir Kordon'da, gün batımını izlerken tanıştık.</div></div>
-     <div class="tl-item"><div class="tl-year">2021</div><div class="tl-text">İlk kaçamağımızı Alaçatı'da yaptık; değirmenlerin arasında saatlerce yürüdük.</div></div>
-     <div class="tl-item"><div class="tl-year">2022</div><div class="tl-text">Karşıyaka'da küçük bir eve birlikte taşındık.</div></div>
-     <div class="tl-item"><div class="tl-year">2032</div><div class="tl-text">Eylül ayında, Tarihi Asansör'de şehrin ışıkları yanarken Batuhan diz çöktü.</div></div>
-     <div class="tl-item"><div class="tl-year">2034</div><div class="tl-text">22 Mayıs'ta, yasemin kokulu bir akşamda evleniyoruz.</div></div>
-   </div>
-  </div>
- </section>
-
- <section class="program">
-  <div class="wrap">
-   <h2 class="section-head">Program</h2>
-   <div class="prog-grid">
-    <div class="prog-block">
-      <h3>Nikâh Töreni</h3>
-      <div class="prog-time">19:00</div>
-      <div class="prog-loc">Zeytin Bahçesi — Deniz Terası<br>Kuşçular, Urla / İzmir</div>
-      <div class="prog-note">Gün batımına denk gelir; 18:45'te terasta olmanızı rica ederiz.</div>
-    </div>
-    <div class="prog-div"></div>
-    <div class="prog-block">
-      <h3>Davet &amp; Resepsiyon</h3>
-      <div class="prog-time">20:30</div>
-      <div class="prog-loc">Zeytin Bahçesi — Ana Salon<br>Kuşçular, Urla / İzmir</div>
-      <div class="prog-note">Aynı bahçede devam ediyor; yemek ve dans gece yarısına kadar sürecek.</div>
-    </div>
-   </div>
-  </div>
- </section>
-
- <section class="gallery">
-  <div class="wrap">
-   <h2 class="section-head">Anılarımızdan</h2>
-   <div class="g-grid">
-     <div class="g-frame"><div class="g-photo ar-tall"><img src="g1.jpg" alt="Kordon'da ilk buluşma" loading="lazy"></div><div class="g-cap">Kordon'da ilk buluşma</div></div>
-     <div class="g-frame"><div class="g-photo ar-square"><img src="g2.jpg" alt="Alaçatı, 2021" loading="lazy"></div><div class="g-cap">Alaçatı, 2021</div></div>
-     <div class="g-frame"><div class="g-photo ar-portrait"><img src="g3.jpg" alt="Karşıyaka'daki evimiz" loading="lazy"></div><div class="g-cap">Karşıyaka'daki evimiz</div></div>
-     <div class="g-frame"><div class="g-photo ar-wide"><img src="g4.jpg" alt="Asansör'de teklif" loading="lazy"></div><div class="g-cap">Asansör'de teklif</div></div>
-     <div class="g-frame"><div class="g-photo ar-tall"><img src="g5.jpg" alt="Urla bağları" loading="lazy"></div><div class="g-cap">Urla bağları</div></div>
-     <div class="g-frame"><div class="g-photo ar-square"><img src="g6.jpg" alt="Kemeraltı'nda bir öğleden sonra" loading="lazy"></div><div class="g-cap">Kemeraltı'nda bir öğleden sonra</div></div>
-   </div>
-  </div>
- </section>
-
- <section class="location">
-  <div class="wrap">
-    <h2 class="section-head">Konum</h2>
-    <p class="loc-addr">Zeytin Bahçesi, Kuşçular Mahallesi, Urla / İzmir</p>
-    <p class="loc-note">Şehir merkezinden gelecek misafirlerimiz için Konak Meydanı'ndan saat 18:00'de kalkacak ücretsiz bir servisimiz olacak; yer ayırtmak için lütfen bize haber verin.</p>
-    <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Kuşçular+Urla+İzmir+zeytin+bahçesi" target="_blank" rel="noopener">Yol Tarifi Al</a>
-  </div>
- </section>
-
- <section class="dress">
-  <div class="wrap">
-    <h2 class="section-head">Kıyafet Önerisi</h2>
-    <p>Ege esintili şık: mercan, safran ve gece mavisi tonlarında bir şeyler bekleriz. Beyazı gelin için bırakırsak seviniriz.</p>
-    <div class="swatches" aria-hidden="true">
-      <span class="swatch" style="background:var(--gunbatimi)"></span>
-      <span class="swatch" style="background:var(--altin)"></span>
-      <span class="swatch" style="background:var(--gece2)"></span>
-      <span class="swatch" style="background:var(--yasemin2); border:1px solid #ddd0ad;"></span>
-    </div>
-  </div>
- </section>
-
- <section class="rsvp">
-  <div class="wrap">
-    <h2 class="section-head">Bize Katılıyor musunuz?</h2>
-    <form id="rsvp-form">
-      <div class="field">
-        <label for="r-name">Ad Soyad</label>
-        <input type="text" id="r-name" name="name" required>
-      </div>
-      <div class="field">
-        <label>Katılım durumunuz</label>
-        <div class="radio-row">
-          <label><input type="radio" name="attending" value="evet" checked> Seve seve katılacağız</label>
-          <label><input type="radio" name="attending" value="hayir"> Ne yazık ki katılamayacağız</label>
+    <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 20s-7-4.35-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 5c-2.5 4.65-9.5 9-9.5 9z"/>
+    </svg>
+    <h2 class="section-head">Hikâyemiz</h2>
+    <div class="timeline" id="timeline">
+      <div class="tl-item">
+        <div class="tl-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 5c-2.5 4.65-9.5 9-9.5 9z"/></svg>
+        </div>
+        <div class="tl-card">
+          <div class="tl-year">2020</div>
+          <div class="tl-text">İzmir Kordon'da, gün batımını izlerken tanıştık.</div>
         </div>
       </div>
-      <div class="field" id="count-field">
-        <label for="r-count">Kaç kişi geleceksiniz</label>
-        <input type="number" id="r-count" name="count" min="1" value="1">
+      <div class="tl-item">
+        <div class="tl-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="1.4" fill="var(--gunbatimi)" stroke="none"/>
+            <path d="M12 12C10 8 10 5 12 3c2 2 2 5 0 9Z"/>
+            <path d="M12 12C16 10 19 10 21 12c-2 2-5 2-9 0Z"/>
+            <path d="M12 12C14 16 14 19 12 21c-2-2-2-5 0-9Z"/>
+            <path d="M12 12C8 14 5 14 3 12c2-2 5-2 9 0Z"/>
+          </svg>
+        </div>
+        <div class="tl-card">
+          <div class="tl-year">2021</div>
+          <div class="tl-text">İlk kaçamağımızı Alaçatı'da yaptık; değirmenlerin arasında saatlerce yürüdük.</div>
+        </div>
       </div>
-      <div class="field">
-        <label for="r-msg">Çiftimize küçük bir not (opsiyonel)</label>
-        <textarea id="r-msg" name="message"></textarea>
+      <div class="tl-item">
+        <div class="tl-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9a1 1 0 0 0 1 1h3v-6h4v6h3a1 1 0 0 0 1-1v-9"/></svg>
+        </div>
+        <div class="tl-card">
+          <div class="tl-year">2022</div>
+          <div class="tl-text">Karşıyaka'da küçük bir eve birlikte taşındık.</div>
+        </div>
       </div>
-      <button type="submit" class="btn" id="r-submit">Cevabımı Gönder</button>
-      <p class="rsvp-status" id="r-status"></p>
-      <p class="rsvp-note">Cevabınız Esra &amp; Batuhan'a doğrudan iletilecektir.</p>
-    </form>
+      <div class="tl-item">
+        <div class="tl-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="15" r="5"/><path d="M9.3 10 12 5l2.7 5"/></svg>
+        </div>
+        <div class="tl-card">
+          <div class="tl-year">2032</div>
+          <div class="tl-text">Eylül ayında, Tarihi Asansör'de şehrin ışıkları yanarken Batuhan diz çöktü.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="13" r="5.5"/><circle cx="15" cy="13" r="5.5"/></svg>
+        </div>
+        <div class="tl-card">
+          <div class="tl-year">2034</div>
+          <div class="tl-text">22 Mayıs'ta, yasemin kokulu bir akşamda evleniyoruz.</div>
+        </div>
+      </div>
+    </div>
   </div>
- </section>
+</section>
+
+<section class="program">
+  <div class="wrap">
+    <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="var(--altin)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>
+    </svg>
+    <h2 class="section-head">Program</h2>
+    <div class="prog-grid">
+      <div class="prog-block">
+        <div class="prog-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--altin)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="6"/><path d="M9 9 12 4l3 5"/></svg>
+        </div>
+        <h3>Nikâh Töreni</h3>
+        <div class="prog-time">19:00</div>
+        <div class="prog-loc">Zeytin Bahçesi — Deniz Terası<br>Kuşçular, Urla / İzmir</div>
+        <div class="prog-note">Gün batımına denk gelir; 18:45'te terasta olmanızı rica ederiz.</div>
+      </div>
+      <div class="prog-div"></div>
+      <span class="prog-amp" aria-hidden="true">&amp;</span>
+      <div class="prog-block">
+        <div class="prog-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--altin)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 3h4l-.6 7a1.4 1.4 0 0 1-1.4 1.3h0A1.4 1.4 0 0 1 6.6 10L6 3Z"/>
+            <path d="M8 11.3V20"/><path d="M5.5 20h5"/>
+            <path d="M14 3h4l-.6 7a1.4 1.4 0 0 1-1.4 1.3h0A1.4 1.4 0 0 1 14.6 10L14 3Z"/>
+            <path d="M16 11.3V20"/><path d="M13.5 20h5"/>
+          </svg>
+        </div>
+        <h3>Davet &amp; Resepsiyon</h3>
+        <div class="prog-time">20:30</div>
+        <div class="prog-loc">Zeytin Bahçesi — Ana Salon<br>Kuşçular, Urla / İzmir</div>
+        <div class="prog-note">Aynı bahçede devam ediyor; yemek ve dans gece yarısına kadar sürecek.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery">
+  <div class="wrap">
+    <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13.5" r="3.5"/>
+    </svg>
+    <h2 class="section-head">Anılarımızdan</h2>
+    <div class="g-grid">
+      <div class="g-frame"><div class="g-photo ar-tall"><img src="g1.jpg" alt="Kordon'da ilk buluşma" loading="lazy"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Kordon'da ilk buluşma</div></div>
+      <div class="g-frame"><div class="g-photo ar-square"><img src="g2.jpg" alt="Alaçatı, 2021" loading="lazy"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Alaçatı, 2021</div></div>
+      <div class="g-frame"><div class="g-photo ar-portrait"><img src="g3.jpg" alt="Karşıyaka'daki evimiz" loading="lazy"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Karşıyaka'daki evimiz</div></div>
+      <div class="g-frame"><div class="g-photo ar-wide"><img src="g4.jpg" alt="Asansör'de teklif" loading="lazy"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Asansör'de teklif</div></div>
+      <div class="g-frame"><div class="g-photo ar-tall"><img src="g5.jpg" alt="Urla bağları" loading="lazy"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Urla bağları</div></div>
+      <div class="g-frame"><div class="g-photo ar-square"><img src="g6.jpg" alt="Kemeraltı'nda bir öğleden sonra" loading="lazy"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Kemeraltı'nda bir öğleden sonra</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="location">
+  <div class="wrap">
+    <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="var(--altin)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 21s-7-6.2-7-11.2A7 7 0 0 1 19 9.8C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.7" r="2.4"/>
+    </svg>
+    <h2 class="section-head">Konum</h2>
+    <div class="loc-grid">
+      <div class="loc-info">
+        <p class="loc-addr">Zeytin Bahçesi, Kuşçular Mahallesi, Urla / İzmir</p>
+        <p class="loc-note">Şehir merkezinden gelecek misafirlerimiz için Konak Meydanı'ndan saat 18:00'de kalkacak ücretsiz bir servisimiz olacak; yer ayırtmak için lütfen bize haber verin.</p>
+        <ul class="loc-details">
+          <li>
+            <span class="loc-d-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--altin)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l1.5-4.5A2 2 0 0 1 6.4 7h11.2a2 2 0 0 1 1.9 1.5L21 13"/><rect x="2.5" y="13" width="19" height="5" rx="1.2"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17" cy="18.5" r="1.6"/></svg></span>
+            <div><strong>Ücretsiz Servis</strong><br>Konak Meydanı'ndan 18:00'de kalkış</div>
+          </li>
+          <li>
+            <span class="loc-d-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--altin)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 16V7h3.5a2.75 2.75 0 0 1 0 5.5H9"/></svg></span>
+            <div><strong>Otopark</strong><br>Bahçe girişinde ücretsiz vale hizmeti</div>
+          </li>
+        </ul>
+        <div class="loc-actions">
+          <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Kuşçular+Urla+İzmir+zeytin+bahçesi" target="_blank" rel="noopener">Yol Tarifi Al</a>
+          <button class="btn btn-ghost" id="copy-gps" type="button">Koordinatları Kopyala</button>
+        </div>
+      </div>
+      <div class="loc-map">
+        <iframe src="https://www.google.com/maps?q=Kuşçular+Mahallesi+Urla+İzmir+zeytin+bahçesi&output=embed" title="Düğün mekanı haritası" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dress">
+  <div class="wrap">
+    <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 4a1.8 1.8 0 1 1 1.8 1.8"/><path d="M12 6l-8 6.5a1.6 1.6 0 0 0 1 2.9h14a1.6 1.6 0 0 0 1-2.9L12 6Z"/><line x1="5" y1="18" x2="19" y2="18"/>
+    </svg>
+    <h2 class="section-head">Kıyafet Önerisi</h2>
+    <p class="dress-intro">Ege esintili, zarif bir hava öneriyoruz — zeytin ağaçlarının arasında gün batımından ilham alan tonlar. Keten, ipek ya da krep gibi hafif dokular bu havaya çok yakışır.</p>
+    <div class="dress-grid">
+      <div class="dress-col dress-yes">
+        <h3><span class="dc-icon dc-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>İdeal Tonlar</h3>
+        <div class="swatches">
+          <div class="swatch-item"><span class="swatch" style="background:var(--gunbatimi)"></span><label>Mercan</label></div>
+          <div class="swatch-item"><span class="swatch" style="background:var(--altin)"></span><label>Antik Altın</label></div>
+          <div class="swatch-item"><span class="swatch" style="background:var(--gece2)"></span><label>Gece Mavisi</label></div>
+          <div class="swatch-item"><span class="swatch" style="background:var(--deniz)"></span><label>Ege Mavisi</label></div>
+        </div>
+      </div>
+      <div class="dress-col dress-no">
+        <h3><span class="dc-icon dc-no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span>Lütfen Kaçının</h3>
+        <p>Beyaz, krem ve fildişi tonlarını geline saklıyoruz. Parlak neon renklerden de kaçınmanızı rica ederiz.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rsvp">
+  <div class="wrap">
+    <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/>
+    </svg>
+    <h2 class="section-head">Bize Katılıyor musunuz?</h2>
+    <div class="rsvp-card">
+      <form id="rsvp-form">
+        <div class="field">
+          <label for="r-name">Ad Soyad</label>
+          <input type="text" id="r-name" name="name" required>
+        </div>
+        <div class="field">
+          <label>Katılım durumunuz</label>
+          <div class="radio-row">
+            <label><input type="radio" name="attending" value="evet" checked> Seve seve katılacağız</label>
+            <label><input type="radio" name="attending" value="hayir"> Ne yazık ki katılamayacağız</label>
+          </div>
+        </div>
+        <div class="field" id="count-field">
+          <label for="r-count">Kaç kişi geleceksiniz</label>
+          <input type="number" id="r-count" name="count" min="1" value="1">
+        </div>
+        <div class="field">
+          <label for="r-msg">Çiftimize küçük bir not (opsiyonel)</label>
+          <textarea id="r-msg" name="message"></textarea>
+        </div>
+        <button type="submit" class="btn" id="r-submit">Cevabımı Gönder</button>
+        <p class="rsvp-status" id="r-status"><span class="rs-icon" id="rs-icon" aria-hidden="true"></span><span id="rs-text"></span></p>
+        <p class="rsvp-note">Cevabınız Esra &amp; Batuhan'a doğrudan iletilecektir.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer>
@@ -536,17 +753,26 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
   <p class="fsign">Esra &amp; Batuhan</p>
 </footer>
 
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lb-close" id="lb-close" type="button" aria-label="Kapat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button class="lb-prev" id="lb-prev" type="button" aria-label="Önceki fotoğraf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button class="lb-next" id="lb-next" type="button" aria-label="Sonraki fotoğraf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <figure class="lb-figure">
+    <img id="lb-img" src="" alt="">
+    <figcaption id="lb-cap"></figcaption>
+  </figure>
+</div>
+
 <script>
 (function(){
+
   // ---- Geri sayım ----
   var target = new Date('2034-05-22T19:00:00+03:00').getTime();
   var elD=document.getElementById('cd-days'),
       elH=document.getElementById('cd-hours'),
       elM=document.getElementById('cd-mins'),
       elS=document.getElementById('cd-secs');
-
   function pad(n){ return String(n).padStart(2,'0'); }
-
   function tick(){
     var now = Date.now();
     var diff = Math.max(0, target - now);
@@ -564,12 +790,26 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
 
   // ---- RSVP ----
   var form = document.getElementById('rsvp-form');
-  var statusEl = document.getElementById('r-status');
+  var rsIcon = document.getElementById('rs-icon');
+  var rsText = document.getElementById('rs-text');
   var countField = document.getElementById('count-field');
   var attendRadios = document.querySelectorAll('input[name="attending"]');
   var submitBtn = document.getElementById('r-submit');
-
   var RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwOYnhM7QM1rKcGvqmSL-a5y5WqCxxu3_ADPIEBJ-ABtAud65bNoJNStMpcNURur8W5tQ/exec';
+
+  function clearStatus(){
+    if(rsIcon){ rsIcon.className = 'rs-icon'; rsIcon.innerHTML = ''; }
+    if(rsText){ rsText.textContent = ''; }
+  }
+  function setStatus(type, text){
+    if(rsIcon){
+      rsIcon.className = 'rs-icon show ' + type;
+      rsIcon.innerHTML = type === 'ok'
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    }
+    if(rsText){ rsText.textContent = text; }
+  }
 
   function updateCountVisibility(){
     var attending = document.querySelector('input[name="attending"]:checked');
@@ -598,7 +838,7 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
       };
 
       if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Gönderiliyor…'; }
-      if(statusEl){ statusEl.textContent = ''; }
+      clearStatus();
 
       fetch(RSVP_ENDPOINT, {
         method: 'POST',
@@ -606,18 +846,14 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
         body: JSON.stringify(payload)
       })
       .then(function(){
-        if(statusEl){
-          statusEl.textContent = isYes
-            ? 'Teşekkürler! Cevabınız kaydedildi, sizi ağırlamak için sabırsızlanıyoruz.'
-            : 'Anlıyoruz, bize haber verdiğiniz için teşekkürler.';
-        }
+        setStatus('ok', isYes
+          ? 'Teşekkürler! Cevabınız kaydedildi, sizi ağırlamak için sabırsızlanıyoruz.'
+          : 'Anlıyoruz, bize haber verdiğiniz için teşekkürler.');
         form.reset();
         updateCountVisibility();
       })
       .catch(function(){
-        if(statusEl){
-          statusEl.textContent = 'Bir sorun oluştu, lütfen tekrar deneyin.';
-        }
+        setStatus('err', 'Bir sorun oluştu, lütfen tekrar deneyin.');
       })
       .finally(function(){
         if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = 'Cevabımı Gönder'; }
@@ -644,28 +880,24 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
       noteIcon.style.display = 'block';
     }
   }
-
   function showHint(){
     if(!hint) return;
     hint.classList.add('show');
     clearTimeout(hintTimer);
     hintTimer = setTimeout(function(){ hint.classList.remove('show'); }, 3200);
   }
-
   function playAudio(){
     var p = audio.play();
     if(p !== undefined){
       p.then(function(){
         setPlayingUI(true);
       }).catch(function(){
-        // Tarayıcı otomatik oynatmayı engelledi, kullanıcı etkileşimi bekleniyor
         setPlayingUI(false);
         showHint();
         armFirstInteractionPlay();
       });
     }
   }
-
   function armFirstInteractionPlay(){
     var events = ['touchstart','click','keydown','scroll'];
     function handler(){
@@ -686,10 +918,87 @@ footer .fsign{ font-family:var(--script); font-size:2.1rem; color:var(--altin); 
         setPlayingUI(false);
       }
     });
-
-    // Sayfa yüklenince otomatik çalmayı dene
     playAudio();
   }
+
+  // ---- Scroll ile belirme (reveal) ----
+  var revealTargets = document.querySelectorAll('.tl-item, .prog-grid, .g-grid, .loc-grid, .dress-grid, .rsvp-card');
+  if('IntersectionObserver' in window){
+    var revealObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold:0.18, rootMargin:'0px 0px -60px 0px' });
+    revealTargets.forEach(function(el){ revealObserver.observe(el); });
+  } else {
+    revealTargets.forEach(function(el){ el.classList.add('in-view'); });
+  }
+
+  // ---- Galeri: büyütme (lightbox) ----
+  var galleryItems = Array.prototype.slice.call(document.querySelectorAll('.g-photo'));
+  var lightbox = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lb-img');
+  var lbCap = document.getElementById('lb-cap');
+  var lbCloseBtn = document.getElementById('lb-close');
+  var lbPrevBtn = document.getElementById('lb-prev');
+  var lbNextBtn = document.getElementById('lb-next');
+  var lbIndex = 0;
+
+  function openLightbox(i){
+    if(!galleryItems.length) return;
+    lbIndex = i;
+    var img = galleryItems[lbIndex].querySelector('img');
+    if(!img || !lbImg) return;
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    if(lbCap) lbCap.textContent = img.alt;
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden','false');
+  }
+  function closeLightbox(){
+    if(!lightbox) return;
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden','true');
+  }
+  function showDelta(delta){
+    lbIndex = (lbIndex + delta + galleryItems.length) % galleryItems.length;
+    openLightbox(lbIndex);
+  }
+  galleryItems.forEach(function(item, i){
+    item.addEventListener('click', function(){ openLightbox(i); });
+  });
+  if(lbCloseBtn) lbCloseBtn.addEventListener('click', closeLightbox);
+  if(lbPrevBtn) lbPrevBtn.addEventListener('click', function(){ showDelta(-1); });
+  if(lbNextBtn) lbNextBtn.addEventListener('click', function(){ showDelta(1); });
+  if(lightbox){
+    lightbox.addEventListener('click', function(e){ if(e.target === lightbox) closeLightbox(); });
+  }
+  document.addEventListener('keydown', function(e){
+    if(!lightbox || !lightbox.classList.contains('open')) return;
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowLeft') showDelta(-1);
+    if(e.key === 'ArrowRight') showDelta(1);
+  });
+
+  // ---- Konum: koordinatları kopyala ----
+  var copyBtn = document.getElementById('copy-gps');
+  if(copyBtn){
+    copyBtn.addEventListener('click', function(){
+      var coords = '38.3222, 26.7654';
+      var original = copyBtn.textContent;
+      function done(){
+        copyBtn.textContent = 'Kopyalandı ✓';
+        setTimeout(function(){ copyBtn.textContent = original; }, 1800);
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(coords).then(done).catch(function(){});
+      }
+    });
+  }
+
 })();
 </script>
 </body>
