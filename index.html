@@ -40,12 +40,15 @@ button, input, textarea, select{font-family:inherit;}
 :focus-visible{outline:2px solid var(--gunbatimi); outline-offset:3px;}
 .wrap{max-width:var(--max); margin:0 auto; padding:0 1.5rem;}
 
+/* Scroll progress */
 .scroll-progress{
   position:fixed; top:0; left:0; height:2px; width:0%;
   background:linear-gradient(90deg, var(--gunbatimi), var(--altin), var(--gunbatimi));
   z-index:999; transition:width .1s linear;
   box-shadow:0 0 10px rgba(224,113,63,.5);
 }
+
+/* Particles */
 .particles{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden;}
 .particle{
   position:absolute; width:5px; height:5px;
@@ -132,6 +135,7 @@ footer .jasmine-flower .bloom{animation:none; opacity:1; transform:scale(1) !imp
 .wave-fill{fill:var(--yasemin);}
 @media(min-width:680px){.wave svg{height:96px;}}
 
+/* Sections */
 section{padding:5.5rem 0; position:relative;}
 .section-icon{display:block; width:30px; height:30px; margin:0 auto 1rem;}
 .section-head{
@@ -241,17 +245,33 @@ section{padding:5.5rem 0; position:relative;}
 .prog-loc{font-size:.95rem; color:var(--text-on-gece); margin:.3rem 0;}
 .prog-note{font-size:.82rem; color:var(--deniz-light); margin-top:.5rem;}
 
-/* Gallery */
+/* ============ GALERİ — SIRALI ANİMASYON ============ */
 .g-grid{column-count:2; column-gap:1.1rem; max-width:600px; margin:0 auto;}
 @media(min-width:600px){.g-grid{column-count:3;}}
-.g-grid > *{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
-.g-grid.in-view > *{opacity:1; transform:translateY(0);}
-.g-grid.in-view > *:nth-child(1){transition-delay:.05s;}
-.g-grid.in-view > *:nth-child(2){transition-delay:.15s;}
-.g-grid.in-view > *:nth-child(3){transition-delay:.25s;}
-.g-grid.in-view > *:nth-child(4){transition-delay:.35s;}
-.g-grid.in-view > *:nth-child(5){transition-delay:.45s;}
-.g-grid.in-view > *:nth-child(6){transition-delay:.55s;}
+
+/* Başlangıçta her kare gizli, aşağıda ve küçük */
+.g-grid > *{
+  opacity:0;
+  transform:translateY(50px) scale(.82);
+  transition:opacity .9s cubic-bezier(.22,.61,.36,1),
+             transform .9s cubic-bezier(.22,.61,.36,1);
+}
+
+/* Sırayla görünür (delay JS ile atanıyor) */
+.g-grid > *.visible{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+
+/* Fotoğrafın içindeki görsel hafif zoom-out yapar */
+.g-grid > * .g-photo{
+  transform:scale(1.1);
+  transition:transform 1.2s cubic-bezier(.22,.61,.36,1);
+}
+.g-grid > *.visible .g-photo{
+  transform:scale(1);
+}
+
 .g-frame{
   break-inside:avoid; margin:0 0 1.1rem;
   border-radius:2px; padding:.5rem .5rem 1.1rem;
@@ -431,14 +451,8 @@ section{padding:5.5rem 0; position:relative;}
 }
 .gift-card:hover .gift-icon{transform:rotate(360deg) scale(1.05); background:rgba(201,162,39,.22);}
 .gift-icon svg{width:22px; height:22px; stroke:var(--gunbatimi);}
-.gift-card h3{
-  font-family:var(--serif); font-weight:500; font-size:1.15rem;
-  margin:0 0 .3rem; color:var(--text);
-}
-.gift-sub{
-  font-size:.72rem; letter-spacing:2px; text-transform:uppercase;
-  color:var(--gunbatimi); margin-bottom:1.1rem; font-weight:600;
-}
+.gift-card h3{font-family:var(--serif); font-weight:500; font-size:1.15rem; margin:0 0 .3rem; color:var(--text);}
+.gift-sub{font-size:.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--gunbatimi); margin-bottom:1.1rem; font-weight:600;}
 .iban-box{
   background:var(--yasemin); border:1px dashed rgba(201,162,39,.6);
   border-radius:4px; padding:.85rem .7rem; margin-bottom:1rem;
@@ -464,7 +478,7 @@ section{padding:5.5rem 0; position:relative;}
 .copy-btn.copied{background:#3f8f92; border-color:#3f8f92; color:var(--yasemin);}
 .copy-btn svg{width:13px; height:13px;}
 
-/* ============ RSVP — PREMIUM ============ */
+/* RSVP PREMIUM */
 .rsvp{
   background:
     radial-gradient(ellipse at 50% 0%, rgba(201,162,39,.12) 0, transparent 55%),
@@ -737,7 +751,8 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
   .names,.tagline,.datebar,.countdown{opacity:1 !important; transform:none !important;}
   .stem-line{stroke-dashoffset:0 !important;}
   .jasmine-flower{opacity:1 !important; transform:scale(1) !important;}
-  .tl-item, .prog-grid, .g-grid > *, .loc-grid, .dress-grid, .gift-grid, .rsvp-invite{opacity:1 !important; transform:none !important;}
+  .tl-item, .prog-grid, .loc-grid, .dress-grid, .gift-grid, .rsvp-invite{opacity:1 !important; transform:none !important;}
+  .g-grid > *{opacity:1 !important; transform:none !important;}
   .tl-item::before{transform:scaleY(1) !important;}
   .tl-item .tl-icon{transform:scale(1.15) rotate(8deg) !important;}
   .tl-item .tl-card::before{transform:scaleY(1) !important;}
@@ -864,7 +879,7 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
       <path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13.5" r="3.5"/>
     </svg>
     <h2 class="section-head">Anılarımızdan</h2>
-    <div class="g-grid">
+    <div class="g-grid" id="g-grid">
       <div class="g-frame"><div class="g-photo ar-tall"><img src="g1.jpg" alt="Kordon'da ilk buluşma" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Kordon'da ilk buluşma</div></div>
       <div class="g-frame"><div class="g-photo ar-square"><img src="g2.jpg" alt="Alaçatı, 2021" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Alaçatı, 2021</div></div>
       <div class="g-frame"><div class="g-photo ar-portrait"><img src="g3.jpg" alt="Karşıyaka'daki evimiz" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Karşıyaka'daki evimiz</div></div>
@@ -932,7 +947,6 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
   </div>
 </section>
 
-<!-- HEDİYE / BANKA HAVALESİ -->
 <section class="gift">
   <div class="wrap">
     <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -977,7 +991,6 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
   </div>
 </section>
 
-<!-- ============ RSVP — PREMIUM ============ -->
 <section class="rsvp">
   <div class="wrap">
     <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -1130,7 +1143,7 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
   tick();
   setInterval(tick, 1000);
 
-  // ===== RSVP =====
+  // RSVP
   var form = document.getElementById('rsvp-form');
   var rsIcon = document.getElementById('rs-icon');
   var rsText = document.getElementById('rs-text');
@@ -1261,8 +1274,8 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
     });
   }
 
-  // Reveal (scroll)
-  var revealTargets = document.querySelectorAll('.tl-item, .prog-grid, .g-grid, .loc-grid, .dress-grid, .gift-grid, .rsvp-invite');
+  // Genel reveal (galeri HARİÇ — galeri kendi sıralı animasyonunu kullanıyor)
+  var revealTargets = document.querySelectorAll('.tl-item, .prog-grid, .loc-grid, .dress-grid, .gift-grid, .rsvp-invite');
   if('IntersectionObserver' in window){
     var revealObserver = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
@@ -1285,50 +1298,85 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
     revealTargets.forEach(function(el){el.classList.add('in-view');});
   }
 
-  // Lightbox
-  var galleryItems = Array.prototype.slice.call(document.querySelectorAll('.g-photo'));
-  var lightbox = document.getElementById('lightbox');
-  var lbImg = document.getElementById('lb-img');
-  var lbCap = document.getElementById('lb-cap');
-  var lbCloseBtn = document.getElementById('lb-close');
-  var lbPrevBtn = document.getElementById('lb-prev');
-  var lbNextBtn = document.getElementById('lb-next');
-  var lbIndex = 0;
-  function openLightbox(i){
-    if(!galleryItems.length) return;
-    lbIndex = i;
-    var img = galleryItems[lbIndex].querySelector('img');
-    if(!img || !lbImg) return;
-    lbImg.src = img.src;
-    lbImg.alt = img.alt;
-    if(lbCap) lbCap.textContent = img.alt;
-    lightbox.classList.add('open');
-    lightbox.setAttribute('aria-hidden','false');
+  // ===== GALERİ — SIRALI ANİMASYON =====
+  var galleryGrid = document.getElementById('g-grid');
+  if(galleryGrid){
+    var galleryItems = galleryGrid.querySelectorAll('.g-frame');
+    var galleryTriggered = false;
+
+    function showGallerySequentially(){
+      if(galleryTriggered) return;
+      galleryTriggered = true;
+      galleryItems.forEach(function(item, i){
+        setTimeout(function(){
+          item.classList.add('visible');
+        }, i * 380); // Her fotoğraf 380ms arayla gelir
+      });
+    }
+
+    if('IntersectionObserver' in window){
+      var galleryObserver = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            showGallerySequentially();
+            galleryObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold:0.15,
+        rootMargin:'0px 0px -80px 0px'
+      });
+      galleryObserver.observe(galleryGrid);
+    } else {
+      showGallerySequentially();
+    }
+
+    // Lightbox
+    var galleryPhotoItems = Array.prototype.slice.call(galleryGrid.querySelectorAll('.g-photo'));
+    var lightbox = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lb-img');
+    var lbCap = document.getElementById('lb-cap');
+    var lbCloseBtn = document.getElementById('lb-close');
+    var lbPrevBtn = document.getElementById('lb-prev');
+    var lbNextBtn = document.getElementById('lb-next');
+    var lbIndex = 0;
+
+    function openLightbox(i){
+      if(!galleryPhotoItems.length) return;
+      lbIndex = i;
+      var img = galleryPhotoItems[lbIndex].querySelector('img');
+      if(!img || !lbImg) return;
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      if(lbCap) lbCap.textContent = img.alt;
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden','false');
+    }
+    function closeLightbox(){
+      if(!lightbox) return;
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden','true');
+    }
+    function showDelta(delta){
+      lbIndex = (lbIndex + delta + galleryPhotoItems.length) % galleryPhotoItems.length;
+      openLightbox(lbIndex);
+    }
+    galleryPhotoItems.forEach(function(item, i){
+      item.addEventListener('click', function(){openLightbox(i);});
+    });
+    if(lbCloseBtn) lbCloseBtn.addEventListener('click', closeLightbox);
+    if(lbPrevBtn) lbPrevBtn.addEventListener('click', function(){showDelta(-1);});
+    if(lbNextBtn) lbNextBtn.addEventListener('click', function(){showDelta(1);});
+    if(lightbox){
+      lightbox.addEventListener('click', function(e){if(e.target === lightbox) closeLightbox();});
+    }
+    document.addEventListener('keydown', function(e){
+      if(!lightbox || !lightbox.classList.contains('open')) return;
+      if(e.key === 'Escape') closeLightbox();
+      if(e.key === 'ArrowLeft') showDelta(-1);
+      if(e.key === 'ArrowRight') showDelta(1);
+    });
   }
-  function closeLightbox(){
-    if(!lightbox) return;
-    lightbox.classList.remove('open');
-    lightbox.setAttribute('aria-hidden','true');
-  }
-  function showDelta(delta){
-    lbIndex = (lbIndex + delta + galleryItems.length) % galleryItems.length;
-    openLightbox(lbIndex);
-  }
-  galleryItems.forEach(function(item, i){
-    item.addEventListener('click', function(){openLightbox(i);});
-  });
-  if(lbCloseBtn) lbCloseBtn.addEventListener('click', closeLightbox);
-  if(lbPrevBtn) lbPrevBtn.addEventListener('click', function(){showDelta(-1);});
-  if(lbNextBtn) lbNextBtn.addEventListener('click', function(){showDelta(1);});
-  if(lightbox){
-    lightbox.addEventListener('click', function(e){if(e.target === lightbox) closeLightbox();});
-  }
-  document.addEventListener('keydown', function(e){
-    if(!lightbox || !lightbox.classList.contains('open')) return;
-    if(e.key === 'Escape') closeLightbox();
-    if(e.key === 'ArrowLeft') showDelta(-1);
-    if(e.key === 'ArrowRight') showDelta(1);
-  });
 
   // Koordinat kopyala
   var copyBtn = document.getElementById('copy-gps');
