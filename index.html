@@ -245,33 +245,21 @@ section{padding:5.5rem 0; position:relative;}
 .prog-loc{font-size:.95rem; color:var(--text-on-gece); margin:.3rem 0;}
 .prog-note{font-size:.82rem; color:var(--deniz-light); margin-top:.5rem;}
 
-/* ============ GALERİ — SIRALI ANİMASYON ============ */
+/* GALERİ */
 .g-grid{column-count:2; column-gap:1.1rem; max-width:600px; margin:0 auto;}
 @media(min-width:600px){.g-grid{column-count:3;}}
-
-/* Başlangıçta her kare gizli, aşağıda ve küçük */
 .g-grid > *{
   opacity:0;
   transform:translateY(50px) scale(.82);
   transition:opacity .9s cubic-bezier(.22,.61,.36,1),
              transform .9s cubic-bezier(.22,.61,.36,1);
 }
-
-/* Sırayla görünür (delay JS ile atanıyor) */
-.g-grid > *.visible{
-  opacity:1;
-  transform:translateY(0) scale(1);
-}
-
-/* Fotoğrafın içindeki görsel hafif zoom-out yapar */
+.g-grid > *.visible{opacity:1; transform:translateY(0) scale(1);}
 .g-grid > * .g-photo{
   transform:scale(1.1);
   transition:transform 1.2s cubic-bezier(.22,.61,.36,1);
 }
-.g-grid > *.visible .g-photo{
-  transform:scale(1);
-}
-
+.g-grid > *.visible .g-photo{transform:scale(1);}
 .g-frame{
   break-inside:avoid; margin:0 0 1.1rem;
   border-radius:2px; padding:.5rem .5rem 1.1rem;
@@ -758,6 +746,44 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
   .tl-item .tl-card::before{transform:scaleY(1) !important;}
   .tl-item .tl-card{transform:translateX(6px) !important;}
 }
+
+/* ============ MOBİL GÜVENCE ============ */
+/* Telefonlarda animasyonlar güvenli çalışsın, hiçbir bölüm görünmez kalmasın */
+@media (max-width: 768px){
+  .rsvp-invite,
+  .tl-item,
+  .prog-grid,
+  .loc-grid,
+  .dress-grid,
+  .gift-grid{
+    opacity:1 !important;
+    transform:none !important;
+  }
+  .rsvp-invite::before{
+    inset:-14px !important;
+    border-color:rgba(201,162,39,.5) !important;
+  }
+  .tl-item .tl-icon{
+    transform:scale(1.15) rotate(8deg) !important;
+  }
+  .tl-item .tl-card::before{
+    transform:scaleY(1) !important;
+  }
+  .tl-item .tl-card{
+    transform:translateX(6px) !important;
+  }
+  .tl-item::before{
+    transform:scaleY(1) !important;
+  }
+  /* Galeri mobilde de sıralı gelsin */
+  .g-grid > *{
+    opacity:1 !important;
+    transform:none !important;
+  }
+  .g-grid > * .g-photo{
+    transform:scale(1) !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -824,19 +850,19 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
     <div class="timeline" id="timeline">
       <div class="tl-item">
         <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 5c-2.5 4.65-9.5 9-9.5 9z"/></svg></div>
-        <div class="tl-card"><div class="tl-year">2026(Mayıs)</div><div class="tl-text">İzmir Kütürpark'ta kütüphanede tanıştık.</div></div>
+        <div class="tl-card"><div class="tl-year">2026(Mayıs)</div><div class="tl-text">İzmir Kültürpark'ta kütüphanede tanıştık.</div></div>
       </div>
       <div class="tl-item">
         <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.4" fill="var(--gunbatimi)" stroke="none"/><path d="M12 12C10 8 10 5 12 3c2 2 2 5 0 9Z"/><path d="M12 12C16 10 19 10 21 12c-2 2-5 2-9 0Z"/><path d="M12 12C14 16 14 19 12 21c-2-2-2-5 0-9Z"/><path d="M12 12C8 14 5 14 3 12c2-2 5-2 9 0Z"/></svg></div>
-        <div class="tl-card"><div class="tl-year">2026(Mayıs)</div><div class="tl-text">İlk kaçamağımızı Alsancakta'da yaptık; deniz kenarında saatlerce yürüdük.</div></div>
+        <div class="tl-card"><div class="tl-year">2026(Mayıs)</div><div class="tl-text">İlk kaçamağımızı Alsancak'ta yaptık; deniz kenarında saatlerce yürüdük.</div></div>
       </div>
       <div class="tl-item">
         <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9a1 1 0 0 0 1 1h3v-6h4v6h3a1 1 0 0 0 1-1v-9"/></svg></div>
-        <div class="tl-card"><div class="tl-year">2026❤️(10 Mayıs)</div><div class="tl-text">Sevgili nişanlıma ilk ozaman sahilde açıldım.</div></div>
+        <div class="tl-card"><div class="tl-year">2026❤️(10 Mayıs)</div><div class="tl-text">Sevgili nişanlıma ilk o zaman sahilde açıldım.</div></div>
       </div>
       <div class="tl-item">
         <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="15" r="5"/><path d="M9.3 10 12 5l2.7 5"/></svg></div>
-        <div class="tl-card"><div class="tl-year">2026(Ağustos)</div><div class="tl-text">Ona ilk çiçeğimi 3.ayımızda aldım.🌹⃝⃝♥️</div></div>
+        <div class="tl-card"><div class="tl-year">2026(Ağustos)</div><div class="tl-text">Ona ilk çiçeğimi 3. ayımızda aldım.🌹♥️</div></div>
       </div>
       <div class="tl-item">
         <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gunbatimi)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="13" r="5.5"/><circle cx="15" cy="13" r="5.5"/></svg></div>
@@ -881,7 +907,7 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
     <h2 class="section-head">Anılarımızdan</h2>
     <div class="g-grid" id="g-grid">
       <div class="g-frame"><div class="g-photo ar-tall"><img src="g1.jpg" alt="Kordon'da ilk buluşma" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Kordon'da ilk buluşma</div></div>
-      <div class="g-frame"><div class="g-photo ar-square"><img src="g2.jpg" alt="Alaçatı, 2021" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Alaçatı, 2021</div></div>
+      <div class="g-frame"><div class="g-photo ar-square"><img src="g2.jpg" alt="Alaçatı, 2021" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Alsancak, 2026</div></div>
       <div class="g-frame"><div class="g-photo ar-portrait"><img src="g3.jpg" alt="Karşıyaka'daki evimiz" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Karşıyaka'daki evimiz</div></div>
       <div class="g-frame"><div class="g-photo ar-wide"><img src="g4.jpg" alt="Asansör'de teklif" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Asansör'de teklif</div></div>
       <div class="g-frame"><div class="g-photo ar-tall"><img src="g5.jpg" alt="Urla bağları" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Urla bağları</div></div>
@@ -1292,7 +1318,7 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
           }
         }
       });
-    }, {threshold:0.55, rootMargin:'-10% 0px -25% 0px'});
+    }, {threshold:0.15, rootMargin:'0px 0px -50px 0px'});
     revealTargets.forEach(function(el){revealObserver.observe(el);});
   } else {
     revealTargets.forEach(function(el){el.classList.add('in-view');});
@@ -1310,7 +1336,7 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
       galleryItems.forEach(function(item, i){
         setTimeout(function(){
           item.classList.add('visible');
-        }, i * 380); // Her fotoğraf 380ms arayla gelir
+        }, i * 380);
       });
     }
 
