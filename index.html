@@ -747,41 +747,53 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
   .tl-item .tl-card{transform:translateX(6px) !important;}
 }
 
-/* ============ MOBİL GÜVENCE ============ */
-/* Telefonlarda animasyonlar güvenli çalışsın, hiçbir bölüm görünmez kalmasın */
+/* ============ MOBİL GÜVENCE — Akıllı ============ */
+/* Sadece görünürlük garantisi verir, animasyonları bozmaz */
 @media (max-width: 768px){
-  .rsvp-invite,
-  .tl-item,
-  .prog-grid,
-  .loc-grid,
-  .dress-grid,
-  .gift-grid{
+  /* RSVP kartı görünür kalsın, opacity düşmesin */
+  .rsvp-invite{
     opacity:1 !important;
-    transform:none !important;
+    transform:translateY(0) !important;
   }
   .rsvp-invite::before{
     inset:-14px !important;
     border-color:rgba(201,162,39,.5) !important;
   }
-  .tl-item .tl-icon{
-    transform:scale(1.15) rotate(8deg) !important;
-  }
-  .tl-item .tl-card::before{
-    transform:scaleY(1) !important;
-  }
-  .tl-item .tl-card{
-    transform:translateX(6px) !important;
-  }
-  .tl-item::before{
-    transform:scaleY(1) !important;
-  }
-  /* Galeri mobilde de sıralı gelsin */
-  .g-grid > *{
+  /* Diğer bölümlerin görünürlük garantisi */
+  .prog-grid.in-view,
+  .loc-grid.in-view,
+  .dress-grid.in-view,
+  .gift-grid.in-view{
     opacity:1 !important;
-    transform:none !important;
+    transform:translateY(0) !important;
   }
-  .g-grid > * .g-photo{
-    transform:scale(1) !important;
+  /* Galeri: hâlâ sıralı gelsin ama görünürlük garanti */
+  .g-grid > *.visible{
+    opacity:1 !important;
+    transform:translateY(0) scale(1) !important;
+  }
+  /* Timeline efektlerini tamamen koru (in-view class'ına bağlı) */
+  .tl-item.in-view{
+    opacity:1 !important;
+    transform:translateY(0) scale(1) !important;
+  }
+  .tl-item.in-view .tl-icon{
+    transform:scale(1.15) rotate(8deg) !important;
+    box-shadow:0 0 0 6px rgba(201,162,39,.15), 0 2px 12px rgba(224,113,63,.3) !important;
+  }
+  .tl-item.in-view .tl-card{
+    transform:translateX(6px) !important;
+    box-shadow:0 8px 24px rgba(20,49,58,.12) !important;
+  }
+  .tl-item.in-view .tl-card::before{
+    transform:scaleY(1) !important;
+  }
+  .tl-item.in-view::before{
+    transform:scaleY(1) !important;
+  }
+  /* Timeline için fallback: eğer JS takılırsa pasifken de hafif görünür kalsın */
+  .tl-item:not(.in-view){
+    opacity:.75 !important;
   }
 }
 </style>
@@ -907,7 +919,7 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
     <h2 class="section-head">Anılarımızdan</h2>
     <div class="g-grid" id="g-grid">
       <div class="g-frame"><div class="g-photo ar-tall"><img src="g1.jpg" alt="Kordon'da ilk buluşma" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Kordon'da ilk buluşma</div></div>
-      <div class="g-frame"><div class="g-photo ar-square"><img src="g2.jpg" alt="Alaçatı, 2021" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Alsancak, 2026</div></div>
+      <div class="g-frame"><div class="g-photo ar-square"><img src="g2.jpg" alt="Alsancak, 2026" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Alsancak, 2026</div></div>
       <div class="g-frame"><div class="g-photo ar-portrait"><img src="g3.jpg" alt="Karşıyaka'daki evimiz" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Karşıyaka'daki evimiz</div></div>
       <div class="g-frame"><div class="g-photo ar-wide"><img src="g4.jpg" alt="Asansör'de teklif" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Asansör'de teklif</div></div>
       <div class="g-frame"><div class="g-photo ar-tall"><img src="g5.jpg" alt="Urla bağları" loading="lazy" onerror="this.style.opacity=.3"><span class="g-expand"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gece)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></span></div><div class="g-cap">Urla bağları</div></div>
@@ -1300,7 +1312,7 @@ footer .fsign{font-family:var(--script); font-size:2.1rem; color:var(--altin); m
     });
   }
 
-  // Genel reveal (galeri HARİÇ — galeri kendi sıralı animasyonunu kullanıyor)
+  // Genel reveal (galeri HARİÇ)
   var revealTargets = document.querySelectorAll('.tl-item, .prog-grid, .loc-grid, .dress-grid, .gift-grid, .rsvp-invite');
   if('IntersectionObserver' in window){
     var revealObserver = new IntersectionObserver(function(entries){
